@@ -1,0 +1,22 @@
+#google_translate_element {
+  width: fit-content;
+}
+
+
+.skiptranslate.goog-te-gadget{
+display: flex;
+align-items: center;
+width: 114px !important;
+overflow: hidden;
+outline:none !important;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd{
+  display: none !important;
+}
+
+
+.skiptranslate.goog-te-gadget select{
+  width: fit-content !important;
+  outline: none !important;
+}
