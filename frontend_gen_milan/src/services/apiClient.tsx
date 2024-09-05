@@ -1,9 +1,9 @@
 import axios from 'axios';
-// export const app_url = 'http://localhost:5173/';
-// export const base_url = 'http://127.0.0.1:8000/api';
+export const app_url = 'http://localhost:5173/';
+export const base_url = 'http://127.0.0.1:8000/api';
 export const nb_key = '908d3c157aae49d898017a167c5b0d0b';
-export const app_url = 'http://geniusship.ai/';
-export const base_url = 'https://api.geniusship.ai/api';
+// export const app_url = 'http://geniusship.ai/';
+// export const base_url = 'https://api.geniusship.ai/api';
 const baseClient = axios.create({
   baseURL: base_url,
   headers: {

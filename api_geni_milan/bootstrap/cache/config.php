@@ -1,6 +1,6 @@
 <?php return array (
-  0 => 'view',
-  6 => 'hashing',
+  7 => 'hashing',
+  13 => 'view',
   'app' => 
   array (
     'name' => 'Laravel',
@@ -216,8 +216,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => '/home/geniusship/public_html/api.geniusship.ai/storage/framework/cache/data',
-        'lock_path' => '/home/geniusship/public_html/api.geniusship.ai/storage/framework/cache/data',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
+        'lock_path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -303,7 +303,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'geniusship_data',
+        'database' => 'shipment',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -316,9 +316,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'geniusship_data',
-        'username' => 'geniusship_new_user',
-        'password' => 'V5Knpzn.cuZ1',
+        'database' => 'shipment',
+        'username' => 'root',
+        'password' => '',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -336,9 +336,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'geniusship_data',
-        'username' => 'geniusship_new_user',
-        'password' => 'V5Knpzn.cuZ1',
+        'database' => 'shipment',
+        'username' => 'root',
+        'password' => '',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -356,9 +356,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'geniusship_data',
-        'username' => 'geniusship_new_user',
-        'password' => 'V5Knpzn.cuZ1',
+        'database' => 'shipment',
+        'username' => 'root',
+        'password' => '',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -371,9 +371,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'geniusship_data',
-        'username' => 'geniusship_new_user',
-        'password' => 'V5Knpzn.cuZ1',
+        'database' => 'shipment',
+        'username' => 'root',
+        'password' => '',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -420,13 +420,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => '/home/geniusship/public_html/api.geniusship.ai/storage/app',
+        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => '/home/geniusship/public_html/api.geniusship.ai/storage/app/public',
+        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
         'url' => 'https://api.geniusship.ai//storage',
         'visibility' => 'public',
         'throw' => false,
@@ -446,7 +446,7 @@
     ),
     'links' => 
     array (
-      '/home/geniusship/public_html/api.geniusship.ai/public/storage' => '/home/geniusship/public_html/api.geniusship.ai/storage/app/public',
+      'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\public\\storage' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -471,14 +471,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => '/home/geniusship/public_html/api.geniusship.ai/storage/logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => '/home/geniusship/public_html/api.geniusship.ai/storage/logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -543,7 +543,7 @@
       ),
       'emergency' => 
       array (
-        'path' => '/home/geniusship/public_html/api.geniusship.ai/storage/logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -619,7 +619,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => '/home/geniusship/public_html/api.geniusship.ai/resources/views/vendor/mail',
+        0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -761,7 +761,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => '/home/geniusship/public_html/api.geniusship.ai/storage/framework/sessions',
+    'files' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -777,14 +777,6 @@
     'http_only' => true,
     'same_site' => 'lax',
     'partitioned' => false,
-  ),
-  'view' => 
-  array (
-    'paths' => 
-    array (
-      0 => '/home/geniusship/public_html/api.geniusship.ai/resources/views',
-    ),
-    'compiled' => '/home/geniusship/public_html/api.geniusship.ai/storage/framework/views',
   ),
   'hashing' => 
   array (
@@ -802,6 +794,14 @@
       'verify' => true,
     ),
     'rehash_on_login' => true,
+  ),
+  'view' => 
+  array (
+    'paths' => 
+    array (
+      0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\resources\\views',
+    ),
+    'compiled' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework\\views',
   ),
   'tinker' => 
   array (

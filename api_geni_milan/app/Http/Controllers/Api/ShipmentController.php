@@ -140,6 +140,10 @@ class ShipmentController extends Controller
         }
         $shipment = Shipment::with(['shipmentPackages', 'customer', 'bids'])->withCount('bids')->where("customer_id", "=", $user->id)->where('id', '=', $id)->first();
         $bids = $shipment->bids()->orderBy('bid_amount', $sortby)->get();
+        $recomm_id = $shipment->bids()->orderBy('bid_amount', 'asc')->first()->id;
+
+        $shipment->recomm_id = $recomm_id;
+
         $shipment->setRelation('bids', $bids);
         return response()->json($shipment, 201);
     }

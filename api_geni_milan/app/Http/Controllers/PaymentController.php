@@ -16,6 +16,8 @@ class PaymentController extends Controller
 
     public function createOrder(Request $request)
     {
+        $per_transaction_fee_percentage = 0;
+        $gst_tax_percentage = 0;
         $bid_id = $request->get('bid_id');
         $bid = Bid::find($bid_id);
         if (!$bid) {
@@ -24,9 +26,17 @@ class PaymentController extends Controller
         $total_shipping_amount = floor($bid->bid_amount);
 
         $per_transaction_fee_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'per_transaction_fee')->first();
-        $per_transaction_fee_percentage = $per_transaction_fee_obj->setting_value;
+
         $gst_tax_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'gst_tax')->first();
-        $gst_tax_percentage = $gst_tax_obj->setting_value;
+    
+
+        if ($per_transaction_fee_obj) {
+            $per_transaction_fee_percentage = $per_transaction_fee_obj->setting_value;
+        }
+        
+        if ($gst_tax_obj) {
+            $gst_tax_percentage = $gst_tax_obj->setting_value;
+        }
 
         $total_tax = floor(($total_shipping_amount / 100) * $gst_tax_percentage);
         $total_transaction_fee = floor(($total_shipping_amount / 100) * $per_transaction_fee_percentage);
@@ -80,7 +90,7 @@ class PaymentController extends Controller
                         return response()->json(['url' => $links['href']]);
                     }
                 }
-            }else{
+            } else {
                 return response()->json(['error' => 'Failed To Create Transaction'], 500);
             }
         } else {
@@ -95,9 +105,16 @@ class PaymentController extends Controller
         $bid = Bid::find($bid_id);
         $total_shipping_amount = floor($bid->bid_amount);
         $per_transaction_fee_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'per_transaction_fee')->first();
-        $per_transaction_fee_percentage = $per_transaction_fee_obj->setting_value;
+        $per_transaction_fee_percentage = 0;
+        $gst_tax_percentage = 0;
+
+        if ($per_transaction_fee_obj) {
+            $per_transaction_fee_percentage = $per_transaction_fee_obj->setting_value;
+        }
         $gst_tax_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'gst_tax')->first();
-        $gst_tax_percentage = $gst_tax_obj->setting_value;
+        if ($gst_tax_obj) {
+            $gst_tax_percentage = $gst_tax_obj->setting_value;
+        }
 
         $total_tax = floor(($total_shipping_amount / 100) * $gst_tax_percentage);
         $total_transaction_fee = floor(($total_shipping_amount / 100) * $per_transaction_fee_percentage);
@@ -134,7 +151,7 @@ class PaymentController extends Controller
                 $transaction->update([
                     'payment_status' => 'completed',
                     'payer_name' => $response['payer']['name']['given_name'],
-                    'payer_email' => $response['payer']['email_address']
+                    'payer_email' => $response['payer']['email_address'],
                 ]);
 
                 // update bid status
@@ -159,9 +176,9 @@ class PaymentController extends Controller
                     "transaction" => $transaction,
                     "bid" => $bid,
                     "shipment_id" => $shipment_id,
-                    "response"=>$response
+                    "response" => $response,
                 ];
-                
+
                 return response()->json(['success' => true, "message" => "Transaction completed successfully"]);
 
             } catch (\Throwable $th) {
