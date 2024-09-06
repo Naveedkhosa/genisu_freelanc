@@ -35,7 +35,7 @@ import ShippingInvoice from "@/pages/ShippingInvoice";
 import Home from "@/pages/Home";
 import NewShipment from "@/pages/NewShipment";
 import NewShipmentDetailsPage from "@/pages/NewShipmentDetail";
-
+import Chat from "@/pages/Chat";
 
 const router = createBrowserRouter([
     {
@@ -201,6 +201,10 @@ const router = createBrowserRouter([
                     }
                 ]
             },
+            {
+                path:"/chat/:chat_room",
+                element: <Chat/>
+            }
         ]
     },
 ]);

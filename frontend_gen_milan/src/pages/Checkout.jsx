@@ -20,6 +20,8 @@ function Checkout() {
             cancel_url: `${app_url}failure`
         }).then((response) => {
             if(response.data?.url){
+                console.log(response);
+                
                 window.location.href = response.data?.url;
             }
             setIs_processing(false);

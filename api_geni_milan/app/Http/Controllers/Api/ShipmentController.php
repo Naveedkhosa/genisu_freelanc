@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\DriverNotification;
 use App\Http\Controllers\Controller;
+use App\Models\ChatRoom;
 use App\Models\Shipment;
 use App\Models\ShipmentPackage;
 use App\Models\ShipmentTracking;
@@ -24,16 +25,23 @@ class ShipmentController extends Controller
         }
         if ($user->role == "Driver" || $user->role == "Transporter") {
             $shipments = Shipment::with(['shipmentPackages', 'customer', 'my_bid'])
-                ->whereHas('my_bid', function ($query) use ($user) {
-                    $query->where('bid_status', 'Accepted')
-                        ->where('bidder_id', $user->id);
-                })
-                ->orderBy('created_at', 'desc')
-                ->get();
-
+            ->whereHas('my_bid', function($query) use ($user) {
+                $query->where('bid_status', 'Accepted')
+                    ->where('bidder_id', $user->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+            foreach ($shipments as $shipment) {
+                $customChatRoom = ChatRoom::where('shipment_id', $shipment->id)->first();
+                $shipment->customChatRoom = $customChatRoom;
+            }
             return response()->json($shipments);
         }
-        $shipments = Shipment::with('shipmentPackages')->with('customer')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
+        $shipments = Shipment::with('shipmentPackages')->with('customer')->withCount('bids')->where("customer_id","=",Auth::id())->orderBy('created_at', 'desc')->get();
+        foreach ($shipments as $shipment) {
+            $customChatRoom = ChatRoom::where('shipment_id', $shipment->id)->first();
+            $shipment->customChatRoom = $customChatRoom;
+        }
         return response()->json($shipments);
     }
 
