@@ -23,7 +23,7 @@ export type Shipment = {
   updated_at: string;
 };
 
-const updateStatus = (shipment_id, shipment_status) => {
+const updateStatus = (shipment_id: any, shipment_status: any) => {
   baseClient.post('shipment/update', {
     id: shipment_id,
     status: shipment_status
@@ -35,7 +35,7 @@ const updateStatus = (shipment_id, shipment_status) => {
 };
 
 export const getShipmentColumns = (t) => {
-  const shipmentColumns: ColumnDef<Shipment>[] = [];
+  var shipmentColumns: ColumnDef<Shipment>[] = [];
 
   if (current_user?.role === "Driver" || current_user?.role === "Transporter") {
     shipmentColumns.push(
@@ -216,7 +216,7 @@ export const getShipmentColumns = (t) => {
           const total_bids = row.getValue<string>("total_bids");
           const shipment_id = row.getValue<string>("shipment_id");
           return (
-            <Link to={`${app_url}my-request/${shipment_id}`} className="text-gray-200 hover:bg-blue-500 hover:text-white border-solid border rounded border-gray-100 py-1 px-3 flex items-center shrink-0 w-full whitespace-nowrap">
+            <Link to={`${app_url}my-request/${shipment_id}`} className="bg-green-600 text-white rounded-sm px-2 py-1 text-nowrap cursor-pointer">
               {total_bids} {t("shipment_columns.Bids")}
             </Link>
           );
@@ -230,18 +230,21 @@ export const getShipmentColumns = (t) => {
           return (
             <>
               {status === "pending" ? (
-                <div className="text-red-600">
+                <div className="bg-red-600 py-1 px-2 text-nowrap text-white rounded-sm">
                   {t("shipment_columns.Pending")}
                 </div>
               ) : (
                 <>
+                 <div className="bg-green-600 py-1 px-2 text-nowrap text-white rounded-sm">
                   {status}
+                </div>
                 </>
               )}
             </>
           );
         },
       },
+
       {
         accessorKey: "created_at",
         header: t("shipment_columns.Created At"),
@@ -285,9 +288,6 @@ export const getShipmentColumns = (t) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{t("shipment_columns.Actions")}</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => navigator.clipboard.writeText("test_link")}>
-                  {t("shipment_columns.Copy payment ID")}
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>{t("shipment_columns.View customer")}</DropdownMenuItem>
                 <DropdownMenuItem>{t("shipment_columns.View payment details")}</DropdownMenuItem>
@@ -297,6 +297,38 @@ export const getShipmentColumns = (t) => {
         },
       }
     );
+
+    // insert column for feedback button
+
+    // insert column for feedback button
+
+    const index = 8; // Position where you want to add the feedback column
+    const newShipmentColumns = [
+      ...shipmentColumns.slice(0, index),
+      {
+        header: "Leave Feedback",
+        cell: ({ row }) => {
+          const status = row?.original?.status;
+          if (status == "delivered") {
+            return (
+              <Link
+                to={`${app_url}feedback/${row?.original?.shipment_id}`}
+                className="bg-yellow-500 hover:underline py-1 px-3 text-nowrap text-white rounded-sm"
+              >
+                Leave Feedback
+              </Link>
+            );
+          } else {
+            return (
+              <>---</>
+            )
+          }
+        },
+      },
+      ...shipmentColumns.slice(index),
+    ];
+    shipmentColumns = newShipmentColumns;
+
   }
 
   return shipmentColumns;

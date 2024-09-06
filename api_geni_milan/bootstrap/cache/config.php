@@ -216,8 +216,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
-        'lock_path' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
+        'lock_path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api_geni_milan\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -420,13 +420,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\app',
+        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
+        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
         'url' => 'https://api.geniusship.ai//storage',
         'visibility' => 'public',
         'throw' => false,
@@ -446,7 +446,7 @@
     ),
     'links' => 
     array (
-      'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\public\\storage' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
+      'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\public\\storage' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -471,14 +471,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -543,7 +543,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
+        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -619,7 +619,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\resources\\views/vendor/mail',
+        0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -761,7 +761,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\framework/sessions',
+    'files' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -799,9 +799,9 @@
   array (
     'paths' => 
     array (
-      0 => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\resources\\views',
+      0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\resources\\views',
     ),
-    'compiled' => 'D:\\Projects\\Progley Projects\\genisu_freelanc\\api_geni_milan\\storage\\framework\\views',
+    'compiled' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\framework\\views',
   ),
   'tinker' => 
   array (
