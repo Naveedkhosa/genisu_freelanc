@@ -1,6 +1,7 @@
 import Root from "@/layouts/Root";
 import Dashboard from "@/pages/Dashboard";
 import FeedBackPage from "@/pages/Feedback";
+import AddFeedBack from "@/pages/AddFeedBack";
 import EarningPage from "@/pages/Earning";
 import InvoicePage from "@/pages/Invoice";
 import { LoginPage } from "@/pages/login";
@@ -169,6 +170,10 @@ const router = createBrowserRouter([
             {
                 path: "/my-request/:id",
                 element: <MyRequest />,
+            },
+            {
+                path: "/feedback/:id",
+                element: <AddFeedBack />,
             },
             {
                 path: "/request-list",
