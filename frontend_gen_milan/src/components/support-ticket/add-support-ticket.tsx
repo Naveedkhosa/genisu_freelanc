@@ -75,10 +75,16 @@ const AddSupportTicket = () => {
                                 <Input
                                     id="subject"
                                     value={subject}
-                                    onChange={(e) => setSubject(e.target.value)}
+                                    onChange={(e) => {
+                                        const newValue = e.target.value;
+                                        if (/^[a-zA-Z\s]*$/.test(newValue)) { // Allows only letters and spaces
+                                            setSubject(newValue);
+                                        }
+                                    }}
                                     className="h-8 col-span-2 bg-black bg-opacity-25 text-white"
                                     placeholder={t("support_ticket.Enter subject")}
                                 />
+
                             </div>
 
                             <div className="md:grid text-white w-full  md:items-center grid-cols-3 gap-4 sm: flex flex-col items-start">
@@ -88,7 +94,7 @@ const AddSupportTicket = () => {
                                     id="description"
                                     value={description}
                                     className="h-8 col-span-2 bg-black bg-opacity-25 text-white"
-                                    onChange={(e) => setDescription(e.target.value)} 
+                                    onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
                             <div className="flex justify-end gap-4">

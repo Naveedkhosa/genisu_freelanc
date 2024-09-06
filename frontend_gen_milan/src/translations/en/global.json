@@ -169,7 +169,10 @@
         "Type of Goods": "Type of Goods",
         "Total Weight": "Total Weight",
         "Length of Goods": "Length of Goods",
-        "Pick a date": "Pick a date"
+        "Pick a date": "Pick a date",
+        "Destination a date": "Destination a date",
+        "Notes": "Notes"
+
     },
     "request_list_header": {
         "All Requests": "All Requests"

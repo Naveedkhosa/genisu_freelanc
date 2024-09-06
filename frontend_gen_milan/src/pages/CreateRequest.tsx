@@ -144,7 +144,7 @@ export function CreateRequest() {
         } else {
             tabValues = tabValues.filter(value => value !== "details");
         }
-    }, [pickup_address, destination_address, pickup_date, destination_date, pickup_time, tabValues, pickup_coordinates, destination_coordinates, quantity, type, length, wide, height, unit_weight, expected_price,notes, pickup_contact, pickup_name, drop_contact, drop_name]);
+    }, [pickup_address, destination_address, pickup_date, destination_date, pickup_time, tabValues, pickup_coordinates, destination_coordinates, quantity, type, length, wide, height, unit_weight, expected_price, notes, pickup_contact, pickup_name, drop_contact, drop_name]);
 
     const deleteSelectedAddress = () => {
         baseClient.delete(`delete-address/${selected_address_id}`)
@@ -477,7 +477,7 @@ export function CreateRequest() {
                                                         className={cn("w-full  bg-black bg-opacity-25 justify-start text-left font-normal", !destination_date && "text-muted-foreground")}
                                                     >
                                                         <CalendarIcon className="w-4  bg-black bg-opacity-25 h-4 mr-2" />
-                                                        <span>{destination_date ? destination_date.toISOString().split('T')[0] : t("create_request.Pick a date")}</span>
+                                                        <span>{destination_date ? destination_date.toISOString().split('T')[0] : t("create_request.Destination a date")}</span>
                                                     </Button>
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-auto p-0">
@@ -511,10 +511,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Quantity"
                                                 value={quantity}
-                                                className="h-8 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                className="h-8 px-3 py-5 border bg-black bg-opacity-25 rounded-sm w-[100%]"
                                                 placeholder=""
-                                                onChange={(e) => { setQuantity(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setQuantity(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                     </div>
                                     <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
@@ -543,10 +549,16 @@ export function CreateRequest() {
                                             <Input
                                                 value={length}
                                                 id="Length"
-                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 px-3 py-5 border bg-black bg-opacity-25 rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Length")}
-                                                onChange={(e) => { setLength(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setLength(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">CM</span>
                                     </div>
@@ -556,10 +568,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Wide"
                                                 value={wide}
-                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 px-3 py-5 border bg-black bg-opacity-25 rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Wide")}
-                                                onChange={(e) => { setWide(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setWide(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">CM</span>
                                     </div>
@@ -569,10 +587,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Height"
                                                 value={height}
-                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 px-3 py-5 border bg-black bg-opacity-25 rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Height")}
-                                                onChange={(e) => { setHeight(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setHeight(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">CM</span>
                                     </div>
@@ -582,10 +606,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Unit Weight"
                                                 value={unit_weight}
-                                                className=" bg-black bg-opacity-25 h-8 col-span-3 px-3 py-5 border rounded-sm w-[100%]"
+                                                className="bg-black bg-opacity-25 h-8 col-span-3 px-3 py-5 border rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Unit Weight")}
-                                                onChange={(e: any) => { setUnitWeight(e.target.value) }}
+                                                onChange={(e: any) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setUnitWeight(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">KG</span>
                                     </div>
@@ -602,10 +632,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Length"
                                                 value={length_of_goods}
-                                                className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Length")}
-                                                onChange={(e) => { setLengthOfGoods(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setLengthOfGoods(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">M</span>
                                     </div>
@@ -615,10 +651,16 @@ export function CreateRequest() {
                                             <Input
                                                 id="Total Weight"
                                                 value={total_weight}
-                                                className="h-8 col-span-3 px-3  bg-black bg-opacity-25 py-5 border rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 px-3 bg-black bg-opacity-25 py-5 border rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Total Weight")}
-                                                onChange={(e: any) => { setTotalWeight(e.target.value) }}
+                                                onChange={(e: any) => {
+                                                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                    setTotalWeight(onlyNumbers);
+                                                }}
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
                                             />
+
                                         </div>
                                         <span className="text-xs font-semibold">T</span>
                                     </div>
@@ -628,10 +670,14 @@ export function CreateRequest() {
                                             <Input
                                                 id="Type of Goods"
                                                 value={type_of_goods}
-                                                className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                                className="h-8 col-span-3 bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
                                                 placeholder={t("create_request.Type of Goods")}
-                                                onChange={(e) => { setTypeOfGoods(e.target.value) }}
+                                                onChange={(e) => {
+                                                    const onlyText = e.target.value.replace(/[0-9]/g, ''); // Remove any digits
+                                                    setTypeOfGoods(onlyText);
+                                                }}
                                             />
+
                                         </div>
                                     </div>
                                 </div>
@@ -714,10 +760,17 @@ export function CreateRequest() {
                                         <Input
                                             value={pickup_contact}
                                             id="Pickup Contact"
-                                            className="h-8  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                            className="h-8 bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
                                             placeholder={t("create_request.Pickup Contact")}
-                                            onChange={(e) => { setPickupContact(e.target.value) }}
+                                            onChange={(e) => {
+                                                const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                setPickupContact(onlyNumbers);
+                                            }}
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                         />
+
+
                                     </div>
                                 </div>
                                 <div className="grid items-center grid-cols-1 gap-2 mt-1 mb-4">
@@ -740,10 +793,16 @@ export function CreateRequest() {
                                         <Input
                                             id="Drop Contact"
                                             value={drop_contact}
-                                            className="h-8 px-3 py-5  bg-black bg-opacity-25 border rounded-sm w-[100%]"
+                                            className="h-8 px-3 py-5 bg-black bg-opacity-25 border rounded-sm w-[100%]"
                                             placeholder={t("create_request.Drop Contact")}
-                                            onChange={(e) => { setDropContact(e.target.value) }}
+                                            onChange={(e) => {
+                                                const onlyNumbers = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+                                                setDropContact(onlyNumbers);
+                                            }}
+                                            inputMode="numeric"
+                                            pattern="[0-9]*"
                                         />
+
                                     </div>
                                 </div>
                                 <div className="grid items-center grid-cols-1 gap-2 mt-1 mb-4 ">
