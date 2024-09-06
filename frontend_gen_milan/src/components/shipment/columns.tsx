@@ -118,6 +118,18 @@ export const getShipmentColumns = (t) => {
         },
       },
       {
+        accessorKey: "chat_room",
+        header: "Chat",
+        cell: ({ row }) => {
+          const chat_room = row.getValue<string>("chat_room");
+          return chat_room == "N/A" ? null : (
+            <Link to={`${app_url}chat/${chat_room}`} style={{color:"black",width:"100%",backgroundColor:"white"}} className="px-4 py-2 rounded-xl">
+              Chat
+            </Link>
+          );
+        },
+      },
+      {
         id: "actions",
         cell: ({ row }) => {
           const shipment_id = row.getValue<string>("shipment_id");
@@ -244,6 +256,18 @@ export const getShipmentColumns = (t) => {
         cell: ({ getValue }) => {
           const value = getValue<string>();
           return format(new Date(value), "MM/dd/yyyy, p"); // Format as needed
+        },
+      },
+      {
+        accessorKey: "chat_room",
+        header: "Chat",
+        cell: ({ row }) => {
+          const chat_room = row.getValue<string>("chat_room");
+          return chat_room == "N/A" ? null : (
+            <Link to={`${app_url}chat/${chat_room}`} style={{color:"black",width:"100%",backgroundColor:"white"}} className="px-4 py-2 rounded-xl">
+              Chat
+            </Link>
+          );
         },
       },
       {

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bid;
+use App\Models\ChatRoom;
 use App\Models\GeneralSetting;
 use App\Models\Shipment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
-
+use Illuminate\Support\Str;
 class PaymentController extends Controller
 {
 
@@ -87,6 +88,13 @@ class PaymentController extends Controller
             if ($transaction->id) {
                 foreach ($response['links'] as $links) {
                     if ($links['rel'] == 'approve') {
+                        $data_bid = Bid::with('shipment')->find($request->bid_id);
+                        ChatRoom::create([
+                            'customer_id' => $data_bid->shipment->customer->id,
+                            'bidder_id' => $data_bid->bidder_id,
+                            'shipment_id' => $data_bid->shipment_id,
+                            'room_name' => uniqid() . Str::random(16),
+                        ]);
                         return response()->json(['url' => $links['href']]);
                     }
                 }
