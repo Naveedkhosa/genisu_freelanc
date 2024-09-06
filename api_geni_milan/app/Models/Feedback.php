@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,11 +11,13 @@ class Feedback extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'rating', 'comments'
+        'shipment_id', 'rating', 'comments',
     ];
 
-    public function user()
+    public function shipment()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Shipment::class);
     }
+
+    
 }

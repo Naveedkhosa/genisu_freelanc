@@ -5,7 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { TbRulerMeasure } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import baseClient from "@/services/apiClient";
-import {nb_key} from "@/services/apiClient";
+import { nb_key } from "@/services/apiClient";
 import nextbillion, { NBMap } from "@nbai/nbmap-gl";
 import "@nbai/nbmap-gl/dist/nextbillion.css";
 import { useTranslation } from 'react-i18next';
@@ -121,6 +121,7 @@ export function CreateRequest() {
     const [truck_type, setTruckType] = useState<number>();
     const [truck_body_type, setTruckBodyType] = useState<number>();
     const [expected_price, setExpectedPrice] = useState<number>();
+    const [notes, setNotes] = useState<any>();
     const [pickup_contact, setPickupContact] = useState<any>();
     const [pickup_name, setPickupName] = useState<any>();
     const [drop_contact, setDropContact] = useState<any>();
@@ -143,7 +144,7 @@ export function CreateRequest() {
         } else {
             tabValues = tabValues.filter(value => value !== "details");
         }
-    }, [pickup_address, destination_address, pickup_date, destination_date, pickup_time, tabValues, pickup_coordinates, destination_coordinates, quantity, type, length, wide, height, unit_weight, expected_price, pickup_contact, pickup_name, drop_contact, drop_name]);
+    }, [pickup_address, destination_address, pickup_date, destination_date, pickup_time, tabValues, pickup_coordinates, destination_coordinates, quantity, type, length, wide, height, unit_weight, expected_price,notes, pickup_contact, pickup_name, drop_contact, drop_name]);
 
     const deleteSelectedAddress = () => {
         baseClient.delete(`delete-address/${selected_address_id}`)
@@ -277,6 +278,7 @@ export function CreateRequest() {
             pickup_time,
             destination_date: destination_date.toISOString().split('T')[0],
             expected_price,
+            notes,
             pickup_contact,
             pickup_name,
             drop_name,
@@ -413,7 +415,7 @@ export function CreateRequest() {
                                                     type="time"
                                                     id="time"
                                                     onChange={(e) => { setPickupTime(e.target.value) }}
-                                                    className="  bg-black bg-opacity-25 text-sm leading-none text-gray-900 border border-gray-300 rounded"
+                                                    className=" bg-black bg-opacity-25 text-sm leading-none text-white border border-gray-300 rounded"
                                                     required
                                                 />
                                             </div>
@@ -494,148 +496,148 @@ export function CreateRequest() {
 
                     <TabsContent value="package">
                         <div className="w-full px-3 bg-transparent sm:px-8">
-                            <Tabs defaultValue="type" className="w-full">
+                            {/* <Tabs defaultValue="type" className="w-full">
                                 <TabsList className='flex justify-center  bg-black bg-opacity-25 w-full gap-4'>
                                     <TabsTrigger value="type" className='w-6 h-6 rounded-full border bg-gray-200 data-[state=active]:bg-gray-800'></TabsTrigger>
                                     <TabsTrigger value="quantity" className='w-6 h-6 rounded-full border bg-gray-200 data-[state=active]:bg-gray-800'></TabsTrigger>
-                                </TabsList>
-                                <TabsContent value="type">
-                                    <BsBoxSeam className="text-[50px] text-primary-200 my-4 w-full text-center" />
-                                    <div className="flex gap-6 mt-6">
-                                        <div className="flex gap-4 flex-col w-full md:w-[50%] ">
-                                            <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
-                                                <Label htmlFor="Quantity">{t("create_request.Quantity")}</Label>
-                                                <div className="relative">
-                                                    <Input
-                                                        id="Quantity"
-                                                        value={quantity}
-                                                        className="h-8 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
-                                                        placeholder=""
-                                                        onChange={(e) => { setQuantity(e.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
-                                                <Label htmlFor="ptype">{t("create_request.Type Of Packages")}</Label>
-                                                <Select onValueChange={(val) => { setType(val) }}>
-                                                    <SelectTrigger className=" bg-black bg-opacity-25 w-full">
-                                                        <SelectValue placeholder={t("create_request.Type Of Packages")} />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectGroup>
-                                                            <SelectLabel>{t("create_request.Packages")}</SelectLabel>
-                                                            {packages.length > 0 && (
-                                                                packages.map((type: any, index: any) => {
-                                                                    return <SelectItem key={index} value={type.id}>{type.name}</SelectItem>
-                                                                })
-                                                            )}
-                                                        </SelectGroup>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-4 flex-col justify-center items-center mx-auto w-full md:w-[50%] mt-1 ">
-                                            <div className="flex items-center gap-2 mt-1 ">
-                                                <Label className="w-[100px]" htmlFor="Length">{t("create_request.Length")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        value={length}
-                                                        id="Length"
-                                                        className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Length")}
-                                                        onChange={(e) => { setLength(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">CM</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 ">
-                                                <Label className="w-[100px]" htmlFor="Wide">{t("create_request.Wide")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        id="Wide"
-                                                        value={wide}
-                                                        className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Wide")}
-                                                        onChange={(e) => { setWide(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">CM</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 mt-1 ">
-                                                <Label className="w-[100px]" htmlFor="Height">{t("create_request.Height")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        id="Height"
-                                                        value={height}
-                                                        className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Height")}
-                                                        onChange={(e) => { setHeight(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">CM</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 mt-1 ">
-                                                <Label className="w-[100px]" htmlFor="Unit Weight">{t("create_request.Unit Weight")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        id="Unit Weight"
-                                                        value={unit_weight}
-                                                        className=" bg-black bg-opacity-25 h-8 col-span-3 px-3 py-5 border rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Unit Weight")}
-                                                        onChange={(e: any) => { setUnitWeight(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">KG</span>
-                                            </div>
+                                </TabsList> */}
+                            {/* <TabsContent value="type"> */}
+                            {/* <BsBoxSeam className="text-[50px] text-primary-200 my-4 w-full text-center" /> */}
+                            <div className="flex gap-6 mt-6">
+                                <div className="flex gap-4 flex-col w-full md:w-[50%] ">
+                                    <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
+                                        <Label htmlFor="Quantity">{t("create_request.Quantity")}</Label>
+                                        <div className="relative">
+                                            <Input
+                                                id="Quantity"
+                                                value={quantity}
+                                                className="h-8 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                placeholder=""
+                                                onChange={(e) => { setQuantity(e.target.value) }}
+                                            />
                                         </div>
                                     </div>
-                                </TabsContent>
-                                <TabsContent value="quantity">
-                                    <TbRulerMeasure className="text-[50px] text-primary-200 my-4 w-full text-center" />
-                                    <div className="flex gap-6 mt-6">
-                                        <div className="flex flex-col justify-center w-full gap-4 mx-auto mt-1 ">
-                                            <div className="flex items-center gap-2 mt-1 ">
-                                                <Label className="w-[100px]" htmlFor="Length">{t("create_request.Length")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        id="Length"
-                                                        value={length_of_goods}
-                                                        className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Length")}
-                                                        onChange={(e) => { setLengthOfGoods(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">M</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 ">
-                                                <Label className="w-[100px]" htmlFor="Total Weight">{t("create_request.Total Weight")}</Label>
-                                                <div className="relative">
-                                                    <Input
-                                                        id="Total Weight"
-                                                        value={total_weight}
-                                                        className="h-8 col-span-3 px-3  bg-black bg-opacity-25 py-5 border rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Total Weight")}
-                                                        onChange={(e: any) => { setTotalWeight(e.target.value) }}
-                                                    />
-                                                </div>
-                                                <span className="text-xs font-semibold">T</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 mt-1 ">
-                                                <Label className="w-[100px]" htmlFor="Type of Goods">{t("create_request.Type of Goods")}</Label>
-                                                <div className="relative ">
-                                                    <Input
-                                                        id="Type of Goods"
-                                                        value={type_of_goods}
-                                                        className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
-                                                        placeholder={t("create_request.Type of Goods")}
-                                                        onChange={(e) => { setTypeOfGoods(e.target.value) }}
-                                                    />
-                                                </div>
-                                            </div>
+                                    <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
+                                        <Label htmlFor="ptype">{t("create_request.Type Of Packages")}</Label>
+                                        <Select onValueChange={(val) => { setType(val) }}>
+                                            <SelectTrigger className=" bg-black bg-opacity-25 w-full">
+                                                <SelectValue placeholder={t("create_request.Type Of Packages")} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>{t("create_request.Packages")}</SelectLabel>
+                                                    {packages.length > 0 && (
+                                                        packages.map((type: any, index: any) => {
+                                                            return <SelectItem key={index} value={type.id}>{type.name}</SelectItem>
+                                                        })
+                                                    )}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 flex-col justify-center items-center mx-auto w-full md:w-[50%] mt-1 ">
+                                    <div className="flex items-center gap-2 mt-1 ">
+                                        <Label className="w-[100px]" htmlFor="Length">{t("create_request.Length")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                value={length}
+                                                id="Length"
+                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Length")}
+                                                onChange={(e) => { setLength(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">CM</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 ">
+                                        <Label className="w-[100px]" htmlFor="Wide">{t("create_request.Wide")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                id="Wide"
+                                                value={wide}
+                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Wide")}
+                                                onChange={(e) => { setWide(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">CM</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-1 ">
+                                        <Label className="w-[100px]" htmlFor="Height">{t("create_request.Height")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                id="Height"
+                                                value={height}
+                                                className="h-8 col-span-3 px-3 py-5 border  bg-black bg-opacity-25 rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Height")}
+                                                onChange={(e) => { setHeight(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">CM</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-1 ">
+                                        <Label className="w-[100px]" htmlFor="Unit Weight">{t("create_request.Unit Weight")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                id="Unit Weight"
+                                                value={unit_weight}
+                                                className=" bg-black bg-opacity-25 h-8 col-span-3 px-3 py-5 border rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Unit Weight")}
+                                                onChange={(e: any) => { setUnitWeight(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">KG</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* </TabsContent> */}
+                            {/* <TabsContent value="quantity"> */}
+                            {/* <TbRulerMeasure className="text-[50px] text-primary-200 my-4 w-full text-center" /> */}
+                            <div className="flex gap-6 mt-6 border-t-2 pt-6">
+                                <div className="flex flex-col justify-center w-full gap-4 mx-auto mt-1 ">
+                                    <div className="flex items-center gap-2 mt-1 ">
+                                        <Label className="w-[100px]" htmlFor="Length">{t("create_request.Length")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                id="Length"
+                                                value={length_of_goods}
+                                                className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Length")}
+                                                onChange={(e) => { setLengthOfGoods(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">M</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 ">
+                                        <Label className="w-[100px]" htmlFor="Total Weight">{t("create_request.Total Weight")}</Label>
+                                        <div className="relative">
+                                            <Input
+                                                id="Total Weight"
+                                                value={total_weight}
+                                                className="h-8 col-span-3 px-3  bg-black bg-opacity-25 py-5 border rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Total Weight")}
+                                                onChange={(e: any) => { setTotalWeight(e.target.value) }}
+                                            />
+                                        </div>
+                                        <span className="text-xs font-semibold">T</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-1 ">
+                                        <Label className="w-[100px]" htmlFor="Type of Goods">{t("create_request.Type of Goods")}</Label>
+                                        <div className="relative ">
+                                            <Input
+                                                id="Type of Goods"
+                                                value={type_of_goods}
+                                                className="h-8 col-span-3  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                                placeholder={t("create_request.Type of Goods")}
+                                                onChange={(e) => { setTypeOfGoods(e.target.value) }}
+                                            />
                                         </div>
                                     </div>
-                                </TabsContent>
-                            </Tabs>
+                                </div>
+                            </div>
+                            {/* </TabsContent> */}
+                            {/* </Tabs> */}
                             <div className="flex justify-end w-full mt-8">
                                 <Button onClick={handleNext} type="button" variant="outline" className="p-5 bg-sky-950 text-white w-[180px] ">{t("create_request.Next")}</Button>
                             </div>
@@ -756,6 +758,22 @@ export function CreateRequest() {
                                         />
                                     </div>
                                 </div>
+                            </div>
+
+
+
+                        </div>
+                        <div className="grid items-center grid-cols-1 gap-2 mt-1 ">
+                            <Label htmlFor="Notes">{t("create_request.Notes")}</Label>
+                            <div className="relative">
+                                <Input
+                                    id="Notes"
+                                    value={notes}
+                                    className="h-8  bg-black bg-opacity-25 px-3 py-5 border rounded-sm w-[100%]"
+                                    placeholder="Write note here if any..."
+                                    type="text"
+                                    onChange={(e) => { setNotes(e.target.value) }}
+                                />
                             </div>
                         </div>
                         <div className="flex justify-end w-full mt-8">

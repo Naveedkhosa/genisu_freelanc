@@ -23,6 +23,15 @@ class Shipment extends Model
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    public function reviews(){
+        return $this->hasMany(FeedBack::class);
+    }
+    
+    public function accepted_bid()
+    {
+        return $this->hasMany(Bid::class)->with('bidder')->where('bid_status', '=', 'Accepted');
+    }
+
     public function bids()
     {
         return $this->hasMany(Bid::class)->with('bidder')->where('bidder_id', '!=', Auth::user()->id);

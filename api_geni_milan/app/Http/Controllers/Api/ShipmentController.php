@@ -3,15 +3,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\DriverNotification;
 use App\Http\Controllers\Controller;
-use App\Models\Bid;
 use App\Models\Shipment;
 use App\Models\ShipmentPackage;
+use App\Models\ShipmentTracking;
 use App\Models\TruckBodyType;
 use App\Models\TruckType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\ShipmentTracking;
 use Illuminate\Support\Facades\Validator;
 
 class ShipmentController extends Controller
@@ -19,26 +18,54 @@ class ShipmentController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if($user->role == 'Admin'){
-            $shipments = Shipment::with(['shipmentPackages','customer'])->withCount('bids')->get();
+        if ($user->role == 'Admin') {
+            $shipments = Shipment::with(['shipmentPackages', 'customer'])->withCount('bids')->get();
             return response()->json($shipments);
         }
-        if($user->role=="Driver" || $user->role=="Transporter"){
-            // $shipments = Bid::where('bidder_id',$user->id)->where('bid_status','Accepted')->with(['bidder','shipment'])->orderBy('created_at', 'desc')->get();
-            // return response()->json($shipments);
-            // Fetch shipments where the logged-in user has an accepted bid
+        if ($user->role == "Driver" || $user->role == "Transporter") {
             $shipments = Shipment::with(['shipmentPackages', 'customer', 'my_bid'])
-            ->whereHas('my_bid', function($query) use ($user) {
-                $query->where('bid_status', 'Accepted')
-                    ->where('bidder_id', $user->id);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+                ->whereHas('my_bid', function ($query) use ($user) {
+                    $query->where('bid_status', 'Accepted')
+                        ->where('bidder_id', $user->id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
 
             return response()->json($shipments);
         }
-        $shipments = Shipment::with('shipmentPackages')->with('customer')->withCount('bids')->where("customer_id","=",Auth::id())->orderBy('created_at', 'desc')->get();
+        $shipments = Shipment::with('shipmentPackages')->with('customer')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
         return response()->json($shipments);
+    }
+
+    public function Review($id)
+    {
+        $shipment = Shipment::with(['accepted_bid', 'reviews'])->where('id', '=', $id)->where('customer_id','=',Auth::user()->id)->first();
+
+        if (isset($shipment->id)) {
+            if (isset($shipment->reviews) && count($shipment->reviews) > 0) {
+                return response()->json([
+                    'status' => true,
+                    "can_review" => false,
+                    "shipment" => $shipment,
+                    "message" => 'You have already left a review',
+                ]);
+            }
+
+            return response()->json([
+                'status' => true,
+                "can_review" => true,
+                "shipment" => $shipment,
+                "message" => 'You can left a review',
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                "can_review" => false,
+                "shipment"=>$shipment,
+                "message" => "Shipment was not found in delivered shipments!",
+            ]);
+        }
+
     }
 
     public function trackShipment($tracking_id)
@@ -129,10 +156,10 @@ class ShipmentController extends Controller
         return response()->json(['message' => 'Shipment created successfully'], 201);
     }
 
-    public function show($id,$sortby="asc")
+    public function show($id, $sortby = "asc")
     {
         $user = Auth::user();
-        if($user->role == 'Admin'){
+        if ($user->role == 'Admin') {
             $shipment = Shipment::with(['shipmentPackages', 'customer', 'bids'])->withCount('bids')->where('id', '=', $id)->first();
             $bids = $shipment->bids()->orderBy('bid_amount', $sortby)->get();
             $shipment->setRelation('bids', $bids);
@@ -229,8 +256,8 @@ class ShipmentController extends Controller
         $shipment->delete();
         return response()->json(null, 204);
     }
-    
-     public function changeStatus(Request $request)
+
+    public function changeStatus(Request $request)
     {
         $request->validate([
             'id' => 'required|exists:shipments,id',
@@ -238,23 +265,21 @@ class ShipmentController extends Controller
         ]);
         $shipment = Shipment::find($request->id);
         if ($shipment) {
-            
+
             $can = [];
-            
-            if($shipment->status=="order_confirmed"){
-                array_push($can,"pickup");
+
+            if ($shipment->status == "order_confirmed") {
+                array_push($can, "pickup");
+            } else if ($shipment->status == "pickup") {
+                array_push($can, "in_transit");
+            } else if ($shipment->status == "in_transit") {
+                array_push($can, "delivered");
             }
-            else if($shipment->status=="pickup"){
-                array_push($can,"in_transit");
-            }
-            else if($shipment->status=="in_transit"){
-                array_push($can,"delivered");
-            }
-            
-            if(in_array($request->status,$can)){
+
+            if (in_array($request->status, $can)) {
                 $shipment->status = $request->status;
                 $shipment->save();
-    
+
                 ShipmentTracking::create([
                     'shipment_id' => $request->id,
                     'timestamp' => now(),
@@ -262,15 +287,11 @@ class ShipmentController extends Controller
                     'status' => $request->status,
                 ]);
                 return response()->json(['message' => 'Status updated successfully'], 200);
-            }else{
+            } else {
                 return response()->json(['message' => 'You can not update status'], 404);
             }
         }
         return response()->json(['message' => 'Shipment not found'], 404);
     }
-    
-    
-}
-  
-  
 
+}

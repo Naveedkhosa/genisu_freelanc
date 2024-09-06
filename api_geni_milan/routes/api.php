@@ -134,6 +134,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Shipment routes
     Route::get('shipments', [ShipmentController::class, 'index']);
     Route::get('shipments/{id}/{sortby?}', [ShipmentController::class, 'show']);
+    Route::get('shipment/{id}/review', [ShipmentController::class, 'Review']);
     Route::post('shipments', [ShipmentController::class, 'store']);
     Route::put('shipments/{id}', [ShipmentController::class, 'update']);
     Route::delete('shipments/{id}', [ShipmentController::class, 'destroy']);
