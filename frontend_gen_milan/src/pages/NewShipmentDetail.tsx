@@ -18,6 +18,8 @@ import { useWindowSize } from "./NewShipment";
 import clsx from "clsx";
 import baseClient from "@/services/apiClient";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import { base_url } from "@/services/apiClient";
 // const shipments = [
 //     {
 //         id: 1,
@@ -159,6 +161,10 @@ export default function NewShipmentDetailsPage({ shipment }) {
               <MdEmail size={16} className="mr-2 " />
               Email
             </Button>
+            {
+                shipment.status != "pending" ? (<Link className="bg-blue-950 my-auto px-6 py-2 rounded-sm" to={'/chat/' + shipment?.chat_room?.id}>Chat</Link>) : null
+            }
+            
           </div>
         </div>
         <Tabs defaultValue="information" className="w-full mt-4">
