@@ -20,6 +20,7 @@ import baseClient from "@/services/apiClient";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { base_url } from "@/services/apiClient";
+import ShippingInvoice from "./ShippingInvoice";
 // const shipments = [
 //     {
 //         id: 1,
@@ -61,7 +62,7 @@ import { base_url } from "@/services/apiClient";
 // ];
 
 export default function NewShipmentDetailsPage({ shipment }) {
-    console.log(shipment);
+    // console.log(shipment);
     
   // const { id } = useParams();
   const [rating, setRating] = useState<number>(null);
@@ -402,7 +403,7 @@ export default function NewShipmentDetailsPage({ shipment }) {
             </div>
           </TabsContent>
           <TabsContent value="Billing">
-            Change your billing Info here.
+            <ShippingInvoice shipment={shipment}/>
           </TabsContent>
           {
             shipment.status == "delivered" ? (

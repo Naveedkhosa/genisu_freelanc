@@ -89,10 +89,10 @@ const router = createBrowserRouter([
                 path: "/new-shipment/:id",
                 element: <NewShipmentDetailsPage shipment={null} />
             },
-            {
-                path: "/shipping-invoice",
-                element: <ShippingInvoice />
-            },
+            // {
+            //     path: "/shipping-invoice",
+            //     element: <ShippingInvoice/>
+            // },
             {
                 path: "/track-shipment",
                 element: <ShipmentTracking />
