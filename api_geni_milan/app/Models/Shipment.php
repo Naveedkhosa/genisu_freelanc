@@ -18,6 +18,10 @@ class Shipment extends Model
         return $this->hasMany(ShipmentPackage::class);
     }
 
+    public function chat_room(){
+        return $this->hasOne(ChatRoom::class,'shipment_id');
+    }
+
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');

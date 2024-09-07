@@ -123,7 +123,7 @@ export const getShipmentColumns = (t) => {
         cell: ({ row }) => {
           const chat_room = row.getValue<string>("chat_room");
           return chat_room == "N/A" ? null : (
-            <Link to={`${app_url}chat/${chat_room}`} style={{color:"black",width:"100%",backgroundColor:"white"}} className="px-4 py-2 rounded-xl">
+            <Link to={`${app_url}chat/${chat_room}`} style={{ color: "black", width: "100%", backgroundColor: "white" }} className="px-4 py-2 rounded-xl">
               Chat
             </Link>
           );
@@ -235,9 +235,9 @@ export const getShipmentColumns = (t) => {
                 </div>
               ) : (
                 <>
-                 <div className="bg-green-600 py-1 px-2 text-nowrap text-white rounded-sm">
-                  {status}
-                </div>
+                  <div className="bg-green-600 py-1 px-2 text-nowrap text-white rounded-sm">
+                    {status}
+                  </div>
                 </>
               )}
             </>
@@ -267,7 +267,7 @@ export const getShipmentColumns = (t) => {
         cell: ({ row }) => {
           const chat_room = row.getValue<string>("chat_room");
           return chat_room == "N/A" ? null : (
-            <Link to={`${app_url}chat/${chat_room}`} style={{color:"black",width:"100%",backgroundColor:"white"}} className="px-4 py-2 rounded-xl">
+            <Link to={`${app_url}chat/${chat_room}`} style={{ color: "black", width: "100%", backgroundColor: "white" }} className="px-4 py-2 rounded-xl">
               Chat
             </Link>
           );

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Peer from 'peerjs';
 
 const Chat = () => {
+  const current_user = JSON.parse(localStorage.getItem("user"));
   const { chat_room } = useParams();
   const [peerID, setPeerID] = useState('');
   const [chatlist, setChatlist] = useState([]);
@@ -17,11 +18,13 @@ const Chat = () => {
     }
 
     const NamePrefix = RandomInt(100000000, 999999999);
-   const newPeer = new Peer(NamePrefix + '-name', {
-  host: 'your-peerjs-server-host',
-  port: 5173,
-  path: '/myapp'
-});
+    const newPeer = new Peer(NamePrefix + '-name',
+      // {
+      //   host: 'your-peerjs-server-host',
+      //   port: 5173,
+      //   path: '/myapp'
+      // }
+    );
 
     setPeer(newPeer);
 
@@ -55,6 +58,13 @@ const Chat = () => {
       }
     }
   }, []);
+
+
+  useEffect(()=>{
+    if(current_user?.role=="Driver"){
+      
+    }
+  },[])
 
   const connect = () => {
     if (peer) {

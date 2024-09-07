@@ -87,7 +87,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/new-shipment/:id",
-                element: <NewShipmentDetailsPage shipment={null}  />
+                element: <NewShipmentDetailsPage shipment={null} />
             },
             {
                 path: "/shipping-invoice",
@@ -202,8 +202,8 @@ const router = createBrowserRouter([
                 ]
             },
             {
-                path:"/chat/:chat_room",
-                element: <Chat/>
+                path: "/chat/:chat_id",
+                element: <Chat />
             }
         ]
     },

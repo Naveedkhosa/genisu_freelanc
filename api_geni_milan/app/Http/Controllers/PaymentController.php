@@ -88,7 +88,7 @@ class PaymentController extends Controller
             if ($transaction->id) {
                 foreach ($response['links'] as $links) {
                     if ($links['rel'] == 'approve') {
-                        $data_bid = Bid::with('shipment')->find($request->bid_id);
+                        $data_bid = Bid::with('shipment')->find($bid->id);
                         ChatRoom::create([
                             'customer_id' => $data_bid->shipment->customer->id,
                             'bidder_id' => $data_bid->bidder_id,
