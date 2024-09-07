@@ -42,6 +42,12 @@ class ShipmentController extends Controller
             $customChatRoom = ChatRoom::where('shipment_id', $shipment->id)->first();
             $shipment->customChatRoom = $customChatRoom;
         }
+        foreach($shipments as $shipment){
+            $truckOccupiedCapacity = Shipment::where('truck_type',$shipment->truck_type)->where('status','!=','delivered')->sum('total_weight');
+            $truckTotalCapacity = TruckType::where('name',$shipment->truck_type)->first();
+            $shipment->truckOccupiedCapacity = $truckOccupiedCapacity;
+            $shipment->truckTotalCapacity = $truckTotalCapacity->capacity;
+        }
         return response()->json($shipments);
     }
 

@@ -23,6 +23,10 @@ export const getTruckColumns = (t): ColumnDef<TruckType>[] => [
     header: t("truck_columns.Name"),
   },
   {
+    accessorKey: "capacity",
+    header: "Capacity",
+  },
+  {
     accessorKey: "created_at",
     header: t("truck_columns.Created At"),
     cell: ({ getValue }) => {
