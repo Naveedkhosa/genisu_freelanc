@@ -31,7 +31,14 @@ class ShipmentController extends Controller
 
             return response()->json($shipments);
         }
-        $shipments = Shipment::with('shipmentPackages')->with('customer')->with('chat_room')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
+          $shipments = Shipment::with('shipmentPackages')->with('accepted_bid')->with('customer')->with('chat_room')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
+        foreach($shipments as $shipment){
+            $truckOccupiedCapacity = Shipment::where('truck_type',$shipment->truck_type)->where('status','!=','delivered')->sum('total_weight');
+            $truckTotalCapacity = TruckType::where('name',$shipment->truck_type)->first();
+            $shipment->truckOccupiedCapacity = $truckOccupiedCapacity;
+            $shipment->truckTotalCapacity = $truckTotalCapacity->capacity;
+        }
+      
 
         return response()->json($shipments);
     }

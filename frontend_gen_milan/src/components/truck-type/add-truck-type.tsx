@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'; // Import useTranslation
 const AddTruckType = () => {
     const { t } = useTranslation("global"); // Initialize useTranslation
     const [name, setName] = useState('');
+    const [capacity, setCapacity] = useState('');
     const [popoverOpen, setPopoverOpen] = useState(false);
 
     const handleSubmit = (e: any) => {
@@ -22,6 +23,7 @@ const AddTruckType = () => {
 
         const data = {
             name,
+            capacity
         };
 
         baseClient.post('/truck-types', data)
@@ -52,10 +54,22 @@ const AddTruckType = () => {
                                 <Label htmlFor="name">{t('add_truck_type.Name')}</Label>
                                 <Input
                                     id="name"
+                                    style={{color: 'black'}}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     className="h-8 col-span-2"
                                     placeholder={t('add_truck_type.Enter Truck Type Name')}
+                                />
+                            </div>
+                            <div className="grid items-center grid-cols-3 gap-4">
+                                <Label htmlFor="capacity">Truck Capacity</Label>
+                                <Input
+                                style={{color: 'black'}}
+                                    id="capacity"
+                                    value={capacity}
+                                    onChange={(e) => setCapacity(e.target.value)}
+                                    className="h-8 col-span-2"
+                                    placeholder={t('add_truck_type.Enter Truck Capacity')}
                                 />
                             </div>
 

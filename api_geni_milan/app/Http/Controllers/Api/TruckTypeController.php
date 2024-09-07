@@ -105,6 +105,7 @@ class TruckTypeController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'capacity' => 'required',
         ]);
 
         $truckType = TruckType::create($request->all());

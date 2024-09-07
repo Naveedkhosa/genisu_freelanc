@@ -296,7 +296,8 @@
         "Cancel": "Cancel",
         "Save": "Save",
         "Truck Type added successfully": "Truck Type added successfully",
-        "Failed to add truck type": "Failed to add truck type"
+        "Failed to add truck type": "Failed to add truck type",
+        "Enter Truck Capacity": "Enter Truck Capacity"
     },
     "add_truck_body_type": {
         "Add Truck Body Type": "Add Truck Body Type",
