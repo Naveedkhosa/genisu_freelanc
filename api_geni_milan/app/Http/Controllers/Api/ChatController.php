@@ -54,7 +54,9 @@ class ChatController extends Controller
             'file_name' => null,
         ]);
 
-        event(new Chat($message));
+        $message_is = ChatMessage::where('id','=',$message->id)->with('user')->first();
+
+        event(new Chat($message_is));
 
         return response()->json([
             "success" => true,

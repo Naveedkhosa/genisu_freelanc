@@ -22,7 +22,7 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('chat_app'); // Channel name
+        return new Channel('chats-development'); // Channel name
     }
 
     /**
