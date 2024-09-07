@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('bid_id');
             $table->string('payer_name')->nullable();
             $table->string('payer_email')->nullable();
+            $table->decimal('transaction_fee', 10, 2);
+            $table->decimal('tax', 10, 2);
             $table->decimal('amount', 10, 2);
             $table->string('currency')->default('USD');
             $table->enum('payment_status',["processing","completed","failed"])->default('processing');

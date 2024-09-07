@@ -9,12 +9,11 @@ const Chat = () => {
 
   const messagesEnd = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEnd.current.scrollIntoView({ behavior: 'smooth' })
-  }
+  const [scrollnow,setScrollNow] = useState(false);
 
+ 
 
-
+  
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -23,6 +22,10 @@ const Chat = () => {
 
   let allMessages = [];
 
+
+  useEffect(()=>{
+    messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+  },[messages,scrollnow])
 
   const [refreshComponent, setRefreshComponent] = useState(false);
 
@@ -38,7 +41,7 @@ const Chat = () => {
         if (response?.data?.success) {
           allMessages = response.data?.chat_room?.messages;
           setMessages(allMessages);
-
+         
 
           console.log("all messages : ", allMessages);
         } else {
@@ -46,31 +49,30 @@ const Chat = () => {
         }
       });
 
-    scrollToBottom();
   }, [chat_id])
 
   const handleSendMessage = () => {
-
-     // new
-     allMessages = messages;
-     console.log(allMessages, "allMessages_old");
-
-     allMessages.push(
-       { id: 6667, message: message, user_id: current_user?.id, chat_id: chat_id, file_name: null, user: current_user }
-     );
-     console.log(allMessages, "allMessages_new");
-     setMessages(allMessages);
-     scrollToBottom();
-    //  new
-
-
+    if(message == ""){
+      return;
+    }
     setProcessing(true);
     const data = {
       message: message,
       chat_id: chat_id
     };
 
+  // new
+  allMessages = messages;
+  console.log(allMessages, "allMessages_old");
 
+  allMessages.push(
+    { id: 6667, message: message, user_id: current_user?.id, chat_id: chat_id, file_name: null, user: current_user }
+  );
+  console.log(allMessages, "allMessages_new");
+  setMessages(allMessages);
+  setScrollNow(!scrollnow);
+  
+ //  new
    
 
     baseClient.post('chat/message', data).then((response) => {

@@ -34,6 +34,7 @@ class CreateShipmentsTable extends Migration
             $table->string('total_weight', 10, 2);
             $table->string('length', 10, 2);
             $table->string('type_of_goods');
+            $table->text('notes')->nullable()->default(null);
             $table->enum('status', ['pending','order_confirmed','pickup','in_transit','delivered'])->default('pending')->nullable();
             $table->timestamps();
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');

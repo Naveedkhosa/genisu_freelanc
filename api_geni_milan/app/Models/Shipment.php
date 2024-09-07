@@ -11,7 +11,7 @@ class Shipment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tracking_number', 'customer_id', 'pickup_address', 'destination_address', 'pickup_address_coords', 'destination_address_coords', 'pickup_time', 'pickup_date', 'destination_date', 'truck_type', 'truck_body_type', 'expected_price', 'pickup_contact_name', 'pickup_contact_phone', 'drop_contact_name', 'drop_contact_phone', 'total_weight', 'length', 'type_of_goods', 'status',
+        'tracking_number','notes', 'customer_id', 'pickup_address', 'destination_address', 'pickup_address_coords', 'destination_address_coords', 'pickup_time', 'pickup_date', 'destination_date', 'truck_type', 'truck_body_type', 'expected_price', 'pickup_contact_name', 'pickup_contact_phone', 'drop_contact_name', 'drop_contact_phone', 'total_weight', 'length', 'type_of_goods', 'status',
     ];
     public function shipmentPackages()
     {
