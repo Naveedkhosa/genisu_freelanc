@@ -13,6 +13,8 @@ class Transaction extends Model
         'bid_id',
         'payer_name',
         'payer_email',
+        'transaction_fee',
+        'tax',
         'amount',
         'currency',
         'payment_status',

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -21,7 +22,7 @@ class Chat implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['chat_app']; // Channel name
+        return new Channel('chats-development'); // Channel name
     }
 
     /**

@@ -163,9 +163,9 @@
       'pusher' => 
       array (
         'driver' => 'pusher',
-        'key' => '64a0078618a01f0c0187',
-        'secret' => 'fc1bc3d46b37d232c821',
-        'app_id' => '1850272',
+        'key' => 'cba34a03b87076b69b01',
+        'secret' => '8271a4841e931aced12c',
+        'app_id' => '1861406',
         'options' => 
         array (
           'cluster' => 'ap2',

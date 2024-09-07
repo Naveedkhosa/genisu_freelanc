@@ -23,13 +23,13 @@ class ShipmentController extends Controller
             return response()->json($shipments);
         }
         if ($user->role == "Driver" || $user->role == "Transporter") {
-            $shipments = Shipment::with(['shipmentPackages', 'customer', 'chat_room', 'my_bid' => function($query) use ($user) {
+            $shipments = Shipment::with(['shipmentPackages', 'customer', 'chat_room', 'my_bid' => function ($query) use ($user) {
                 $query->where('bidder_id', $user->id);
             }])
-            ->orderBy('created_at', 'desc')
-            ->get();
-    
-        return response()->json($shipments);
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json($shipments);
         }
           $shipments = Shipment::with('shipmentPackages')->with('accepted_bid')->with('customer')->with('chat_room')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
         foreach($shipments as $shipment){
@@ -137,6 +137,7 @@ class ShipmentController extends Controller
                 "customer_id" => Auth::user()->id,
                 "truck_body_type" => $truck_body_type,
                 "truck_type" => $truck_type,
+                "notes" => $request->notes ?? null,
             ]);
 
             $tracking_number = "MGS" . Auth::user()->id . rand(100, 999) . $shipment->id;

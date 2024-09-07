@@ -10,8 +10,9 @@ use App\Models\Shipment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Illuminate\Support\Str;
+use Srmklive\PayPal\Services\PayPal as PayPalClient;
+
 class PaymentController extends Controller
 {
 
@@ -29,12 +30,11 @@ class PaymentController extends Controller
         $per_transaction_fee_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'per_transaction_fee')->first();
 
         $gst_tax_obj = GeneralSetting::select("setting_value")->where('setting_key', '=', 'gst_tax')->first();
-    
 
         if ($per_transaction_fee_obj) {
             $per_transaction_fee_percentage = $per_transaction_fee_obj->setting_value;
         }
-        
+
         if ($gst_tax_obj) {
             $gst_tax_percentage = $gst_tax_obj->setting_value;
         }
@@ -78,6 +78,8 @@ class PaymentController extends Controller
                     'bid_id' => $bid->id,
                     'payer_name' => '',
                     'payer_email' => '',
+                    'transaction_fee' => $data['transaction_fee'],
+                    'tax' => $data['tax'],
                     'amount' => $data['sub_total'],
                     'currency' => 'USD',
                     'payment_status' => 'processing',
@@ -199,6 +201,14 @@ class PaymentController extends Controller
             if (isset($response['error']['details'][0]['description'])) {
                 $error_msg = $response['error']['details'][0]['description'];
             }
+
+            $transaction = Transaction::where('payment_id', '=', $request['token'])->first();
+            if ($transaction) {
+                $transaction->update([
+                    'payment_status' => 'failed',
+                ]);
+            }
+
             return response()->json(['error' => true, "message" => $error_msg], 200);
         }
     }
