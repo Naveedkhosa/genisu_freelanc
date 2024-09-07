@@ -9,11 +9,7 @@ const Chat = () => {
 
   const messagesEnd = useRef(null);
 
-  const [scrollnow,setScrollNow] = useState(false);
-
- 
-
-  
+  const [scrollnow, setScrollNow] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -23,36 +19,37 @@ const Chat = () => {
   let allMessages = [];
 
 
-  useEffect(()=>{
-    messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
-  },[messages,scrollnow])
-
-  const [refreshComponent, setRefreshComponent] = useState(false);
-
-  const { chat_id } = useParams();
-
-  const current_user = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
-    console.log("i was called");
+    messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, scrollnow])
+
+
+   function loadMessages() {
     baseClient.get(`chat/${chat_id}/messages`)
       .then((response) => {
         setLoading(false);
         if (response?.data?.success) {
           allMessages = response.data?.chat_room?.messages;
           setMessages(allMessages);
-         
-
-          console.log("all messages : ", allMessages);
         } else {
           toast.error(response?.data?.message);
         }
       });
+  }
 
-  }, [chat_id])
+  const { chat_id } = useParams();
+
+  const current_user = JSON.parse(localStorage.getItem("user"));
+  const [refresh_component, setRefreshComponent] = useState(false);
+
+  useEffect(() => {
+
+    loadMessages();
+
+  }, [chat_id, refresh_component])
 
   const handleSendMessage = () => {
-    if(message == ""){
+    if (message == "") {
       return;
     }
     setProcessing(true);
@@ -61,22 +58,14 @@ const Chat = () => {
       chat_id: chat_id
     };
 
-  // new
-  allMessages = messages;
-  console.log(allMessages, "allMessages_old");
-
-  allMessages.push(
-    { id: 6667, message: message, user_id: current_user?.id, chat_id: chat_id, file_name: null, user: current_user }
-  );
-  console.log(allMessages, "allMessages_new");
-  setMessages(allMessages);
-  setScrollNow(!scrollnow);
-  
- //  new
-   
+    allMessages = messages;
+    allMessages.push(
+      { id: 6667, message: message, user_id: current_user?.id, chat_id: chat_id, file_name: null, user: current_user }
+    );
+    setMessages(allMessages);
+    setScrollNow(!scrollnow);
 
     baseClient.post('chat/message', data).then((response) => {
-      console.log("response : ", response.data);
       setProcessing(false);
     });
 
@@ -85,14 +74,15 @@ const Chat = () => {
 
 
   useEffect(() => {
-    const pusher = new Pusher('64a0078618a01f0c0187', {
+    const pusher = new Pusher('cba34a03b87076b69b01', {
       cluster: 'ap2',
     });
-    const channel = pusher.subscribe('chat_app');
+    const channel = pusher.subscribe('chats-development');
     channel.bind('chat', (data: any) => {
 
-      console.log('Received message: ', data);
-
+      if (current_user?.id != data?.message?.user?.id) {
+        loadMessages();
+      }
     });
 
     return () => {
