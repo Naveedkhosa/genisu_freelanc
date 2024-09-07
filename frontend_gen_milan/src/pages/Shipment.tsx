@@ -36,7 +36,7 @@ const ShipmentPage = () => {
         }
         const shipments = filteredShipments.map((shipment: any) => {
           const commonData = {
-            chat_room: shipment?.customChatRoom?.room_name || "N/A",
+            chat_room: shipment?.chat_room?.id || "N/A",
             shipment_id: shipment.id,
             tracking_number: shipment.tracking_number,
             customer_name: shipment.customer.name,

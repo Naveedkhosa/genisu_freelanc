@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\UserAddressController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\Api\VehicleMaintenanceController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayPalController;
 use Illuminate\Http\Request;
@@ -39,9 +40,6 @@ Route::post('login', [AuthController::class, 'login']);
 // update locations
 Route::post('update/locations/', [UserController::class, 'updateLocations']);
 
-
-
-
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
@@ -53,11 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/checkout/process', [PaymentController::class, 'checkoutprocess']);
     Route::post('/orders', [PaymentController::class, 'createOrder']);
     Route::post('checkout/success', [PaymentController::class, 'success']);
-
-    // Route::post('/orders/{orderId}/capture', [PaymentController::class, 'captureOrder']);
-    // Route::post('/orders/{orderId}/authorize', [PaymentController::class, 'authorizeOrder']);
-    // Route::post('/orders/{authorizationId}/captureAuthorize', [PaymentController::class, 'captureAuthorize']);
-  // payment routes
+    
+    // in-app chat routes
+    Route::get('chat/rooms',[ChatController::class,'index']);
+    Route::get('chat/{id}/messages',[ChatController::class,'messages']);
+    Route::post('chat/message',[ChatController::class,'sendMessage']);
 
     // dashboard stats
     Route::get('dashboard/statistics/', [DashboardController::class, 'index']);

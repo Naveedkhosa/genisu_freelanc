@@ -3,7 +3,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\DriverNotification;
 use App\Http\Controllers\Controller;
-use App\Models\ChatRoom;
 use App\Models\Shipment;
 use App\Models\ShipmentPackage;
 use App\Models\ShipmentTracking;
@@ -24,30 +23,22 @@ class ShipmentController extends Controller
             return response()->json($shipments);
         }
         if ($user->role == "Driver" || $user->role == "Transporter") {
-            $shipments = Shipment::with(['shipmentPackages', 'customer', 'my_bid'])
-            ->whereHas('my_bid', function($query) use ($user) {
-                $query->where('bid_status', 'Accepted')
-                    ->where('bidder_id', $user->id);
-            })
+            $shipments = Shipment::with(['shipmentPackages', 'customer', 'chat_room', 'my_bid' => function($query) use ($user) {
+                $query->where('bidder_id', $user->id);
+            }])
             ->orderBy('created_at', 'desc')
             ->get();
-            foreach ($shipments as $shipment) {
-                $customChatRoom = ChatRoom::where('shipment_id', $shipment->id)->first();
-                $shipment->customChatRoom = $customChatRoom;
-            }
-            return response()->json($shipments);
+    
+        return response()->json($shipments);
         }
-        $shipments = Shipment::with('shipmentPackages')->with('customer')->withCount('bids')->where("customer_id","=",Auth::id())->orderBy('created_at', 'desc')->get();
-        foreach ($shipments as $shipment) {
-            $customChatRoom = ChatRoom::where('shipment_id', $shipment->id)->first();
-            $shipment->customChatRoom = $customChatRoom;
-        }
+        $shipments = Shipment::with('shipmentPackages')->with('customer')->with('chat_room')->withCount('bids')->where("customer_id", "=", Auth::id())->orderBy('created_at', 'desc')->get();
+
         return response()->json($shipments);
     }
 
     public function Review($id)
     {
-        $shipment = Shipment::with(['accepted_bid', 'reviews'])->where('id', '=', $id)->where('customer_id','=',Auth::user()->id)->first();
+        $shipment = Shipment::with(['accepted_bid', 'reviews'])->where('id', '=', $id)->where('customer_id', '=', Auth::user()->id)->first();
 
         if (isset($shipment->id)) {
             if (isset($shipment->reviews) && count($shipment->reviews) > 0) {
@@ -69,7 +60,7 @@ class ShipmentController extends Controller
             return response()->json([
                 'status' => false,
                 "can_review" => false,
-                "shipment"=>$shipment,
+                "shipment" => $shipment,
                 "message" => "Shipment was not found in delivered shipments!",
             ]);
         }
@@ -175,7 +166,13 @@ class ShipmentController extends Controller
         }
         $shipment = Shipment::with(['shipmentPackages', 'customer', 'bids'])->withCount('bids')->where("customer_id", "=", $user->id)->where('id', '=', $id)->first();
         $bids = $shipment->bids()->orderBy('bid_amount', $sortby)->get();
-        $recomm_id = $shipment->bids()->orderBy('bid_amount', 'asc')->first()->id;
+
+        $recomm = $shipment->bids()->orderBy('bid_amount', 'asc')->first();
+
+        $recomm_id = 0;
+        if ($recomm) {
+            $recomm_id = $recomm->id;
+        }
 
         $shipment->recomm_id = $recomm_id;
 
