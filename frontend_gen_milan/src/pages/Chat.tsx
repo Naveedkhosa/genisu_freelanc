@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Pusher from "pusher-js";
 import baseClient from '@/services/apiClient';
@@ -7,11 +7,21 @@ import { toast } from 'sonner';
 
 const Chat = () => {
 
+  const messagesEnd = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEnd.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+
+
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [processing, setProcessing] = useState(false);
+
+  let allMessages = [];
 
 
   const [refreshComponent, setRefreshComponent] = useState(false);
@@ -21,28 +31,51 @@ const Chat = () => {
   const current_user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
+    console.log("i was called");
     baseClient.get(`chat/${chat_id}/messages`)
       .then((response) => {
         setLoading(false);
         if (response?.data?.success) {
-          setMessages(response.data?.chat_room?.messages);
+          allMessages = response.data?.chat_room?.messages;
+          setMessages(allMessages);
+
+
+          console.log("all messages : ", allMessages);
         } else {
           toast.error(response?.data?.message);
         }
       });
-  }, [chat_id, refreshComponent])
+
+    scrollToBottom();
+  }, [chat_id])
 
   const handleSendMessage = () => {
+
+     // new
+     allMessages = messages;
+     console.log(allMessages, "allMessages_old");
+
+     allMessages.push(
+       { id: 6667, message: message, user_id: current_user?.id, chat_id: chat_id, file_name: null, user: current_user }
+     );
+     console.log(allMessages, "allMessages_new");
+     setMessages(allMessages);
+     scrollToBottom();
+    //  new
+
+
     setProcessing(true);
     const data = {
       message: message,
       chat_id: chat_id
     };
 
+
+   
+
     baseClient.post('chat/message', data).then((response) => {
       console.log("response : ", response.data);
       setProcessing(false);
-      setRefreshComponent(!refreshComponent);
     });
 
     setMessage('');
@@ -55,9 +88,9 @@ const Chat = () => {
     });
     const channel = pusher.subscribe('chat_app');
     channel.bind('chat', (data: any) => {
-      setRefreshComponent(true);
+
       console.log('Received message: ', data);
-      
+
     });
 
     return () => {
@@ -75,7 +108,8 @@ const Chat = () => {
                 <div className=" grid-cols-12 gap-y-2 ">
 
 
-                  {messages?.map((msg, index) => (
+                  {messages.map((msg, index) => (
+
                     <div
                       key={index}
                       className={`block col-start-${msg?.user_id === current_user?.id ? '8' : '1'} col-end-${msg?.user_id === current_user?.id ? '13' : '8'} p-3 rounded-lg`}
@@ -89,7 +123,14 @@ const Chat = () => {
                         </div>
                       </div>
                     </div>
+
+
+
                   ))}
+
+                  <div style={{ float: "left", clear: "both" }}
+                    ref={messagesEnd}>
+                  </div>
 
                 </div>
               </div>

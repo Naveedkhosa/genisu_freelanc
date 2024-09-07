@@ -54,9 +54,7 @@ class ChatController extends Controller
             'file_name' => null,
         ]);
 
-        
-
-        event(New Chat($message));
+        event(new Chat($message));
 
         return response()->json([
             "success" => true,

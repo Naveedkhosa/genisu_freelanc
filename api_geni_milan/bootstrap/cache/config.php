@@ -6,7 +6,7 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'https://api.geniusship.ai/',
+    'url' => 'http://127.0.0.1:8000',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
@@ -427,7 +427,7 @@
       array (
         'driver' => 'local',
         'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api_geni_milan\\storage\\app/public',
-        'url' => 'https://api.geniusship.ai//storage',
+        'url' => 'http://127.0.0.1:8000/storage',
         'visibility' => 'public',
         'throw' => false,
       ),
@@ -562,7 +562,7 @@
         'username' => NULL,
         'password' => NULL,
         'timeout' => NULL,
-        'local_domain' => 'api.geniusship.ai',
+        'local_domain' => '127.0.0.1',
       ),
       'ses' => 
       array (
@@ -715,7 +715,7 @@
       4 => '::1',
       5 => 'https://geniusship.ai',
       6 => 'https://test.progley.com',
-      7 => 'api.geniusship.ai',
+      7 => '127.0.0.1:8000',
     ),
     'guard' => 
     array (
