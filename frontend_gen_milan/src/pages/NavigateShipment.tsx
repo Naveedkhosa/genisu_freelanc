@@ -8,7 +8,7 @@ import Pusher from 'pusher-js';
 import './direction.css';
 import carIcon from '@/assets/car.png';
 import stopIcon from '@/assets/boy.png';
-import {nb_key} from "@/services/apiClient";
+import { nb_key } from "@/services/apiClient";
 nextbillion.setApiKey(nb_key);
 
 function initSource(nbmap: any) {
@@ -34,8 +34,8 @@ function initSource(nbmap: any) {
       }
     }
   });
-  
-    // Add source for start and destination icons
+
+  // Add source for start and destination icons
   nbmap.map.addSource('start-end-points', {
     type: 'geojson',
     data: {
@@ -167,36 +167,36 @@ function initLayer(nbmap: any) {
   //   }
   // });
 
- // Load the car icon
-nbmap.map.loadImage(carIcon, (error, carImage) => {
-  if (error) throw error;
-
-  nbmap.map.addImage('car-icon', carImage);
-
-  // Load the stop icon
-  nbmap.map.loadImage(stopIcon, (error, stopImage) => {
+  // Load the car icon
+  nbmap.map.loadImage(carIcon, (error, carImage) => {
     if (error) throw error;
 
-    nbmap.map.addImage('stop-icon', stopImage);
+    nbmap.map.addImage('car-icon', carImage);
 
-    // Add a symbol layer using the car and stop icons
-    nbmap.map.addLayer({
-      id: 'maneuver-points',
-      type: 'symbol',
-      filter: ['==', ['get', 'type'], 'maneuver'],
-      source: 'route',
-      layout: {
-        'icon-image': [
-          'case',
-          ['==', ['get', 'subtype'], 'start'], 'stop-icon', // Use car icon if subtype is 'start'
-          ['==', ['get', 'subtype'], 'stop'], 'stop-icon', // Use stop icon if subtype is 'stop'
-          'car-icon' // Default icon for other maneuvers
-        ],
-        'icon-size': 0.1, // Adjust the size as needed
-      }
+    // Load the stop icon
+    nbmap.map.loadImage(stopIcon, (error, stopImage) => {
+      if (error) throw error;
+
+      nbmap.map.addImage('stop-icon', stopImage);
+
+      // Add a symbol layer using the car and stop icons
+      nbmap.map.addLayer({
+        id: 'maneuver-points',
+        type: 'symbol',
+        filter: ['==', ['get', 'type'], 'maneuver'],
+        source: 'route',
+        layout: {
+          'icon-image': [
+            'case',
+            ['==', ['get', 'subtype'], 'start'], 'stop-icon', // Use car icon if subtype is 'start'
+            ['==', ['get', 'subtype'], 'stop'], 'stop-icon', // Use stop icon if subtype is 'stop'
+            'car-icon' // Default icon for other maneuvers
+          ],
+          'icon-size': 0.1, // Adjust the size as needed
+        }
+      });
     });
   });
-});
 
   nbmap.map.addLayer({
     id: 'maneuver-instruction',
@@ -220,7 +220,7 @@ nbmap.map.loadImage(carIcon, (error, carImage) => {
       'circle-radius': 10
     }
   });
-  
+
   // Add a layer for the start (car icon) and end (stop icon) points
   nbmap.map.addLayer({
     id: 'start-end-points-layer',
@@ -251,48 +251,54 @@ const NavigateShipment = () => {
   const [routeData, setRouteData] = useState(null);
   const [liveLocation, setLiveLocation] = useState({ lat: 34.052235, lng: -118.243683 }); // Default location
 
-//   useEffect(() => {
-//     const pusher = new Pusher('dfe96704a38961067cf1', {
-//       cluster: 'ap2'
-//     });
+  //   useEffect(() => {
+  //     const pusher = new Pusher('dfe96704a38961067cf1', {
+  //       cluster: 'ap2'
+  //     });
 
-//     const channel = pusher.subscribe('chat');
+  //     const channel = pusher.subscribe('chat');
 
 
-//     channel.bind('message', function (data) {
-//       console.log('Live location data received:', data);
-//       setLiveLocation({ lat: data.lat, lng: data.lng });
-//     });
+  //     channel.bind('message', function (data) {
+  //       console.log('Live location data received:', data);
+  //       setLiveLocation({ lat: data.lat, lng: data.lng });
+  //     });
 
-//     return () => {
-//       pusher.unsubscribe('chat');
-//     };
-//   }, []);
+  //     return () => {
+  //       pusher.unsubscribe('chat');
+  //     };
+  //   }, []);
 
   const current_user = JSON.parse(localStorage.getItem("user"));
-  
 
-useEffect(() => {
-     console.log('pusher start');
-        // Replace with your Pusher credentials
-        const pusher = new Pusher('64a0078618a01f0c0187', {
-            cluster: 'ap2',
-           // encrypted: true
-        });
 
-        const channel = pusher.subscribe('geniusship-production');
-        channel.bind('message', (data) => {
-            console.log('Received message: ', data);
-            if(data.id==current_user?.id){
-               setLiveLocation({ lat: data.lat, lng: data.lng });
-            }
-        });
+  var watch_id = navigator.geolocation.watchPosition((position) => {
+    setLiveLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+    console.log(position);
+  });
 
-        return () => {
-            pusher.unsubscribe('geniusship-production');
-        };
-        console.log('pusher end');
-    }, []);
+
+  useEffect(() => {
+    console.log('pusher start');
+    // Replace with your Pusher credentials
+    const pusher = new Pusher('64a0078618a01f0c0187', {
+      cluster: 'ap2',
+      // encrypted: true
+    });
+
+    const channel = pusher.subscribe('geniusship-production');
+    channel.bind('message', (data) => {
+      console.log('Received message: ', data);
+      if (data.id == current_user?.id) {
+        setLiveLocation({ lat: data.lat, lng: data.lng });
+      }
+    });
+
+    return () => {
+      pusher.unsubscribe('geniusship-production');
+    };
+    console.log('pusher end');
+  }, []);
 
   const [map_center, setMapCenter] = useState({ lat: 28.6133, lng: 77.2104 });
 
@@ -310,7 +316,7 @@ useEffect(() => {
     nbmapRef.current.on('load', () => {
       initSource(nbmapRef.current);
       initLayer(nbmapRef.current);
-      
+
       // Load the car and stop icons
       nbmapRef.current.map.loadImage(carIcon, (error, image) => {
         if (error) throw error;
@@ -321,9 +327,9 @@ useEffect(() => {
         if (error) throw error;
         nbmapRef.current.map.addImage('stop-icon', image);
       });
-      
-      
-      
+
+
+
     });
   }, []);
 
@@ -345,8 +351,8 @@ useEffect(() => {
       if (routeData) {
         updateResult(nbmapRef.current, routeData);
       }
-      
-        // Update the start and end points
+
+      // Update the start and end points
       const startEndSource = nbmapRef.current.map.getSource('start-end-points');
       if (startEndSource) {
         startEndSource.setData({
@@ -375,8 +381,8 @@ useEffect(() => {
           ]
         });
       }
-    
-      
+
+
     }
   }, [liveLocation, routeData]);
 
@@ -393,8 +399,11 @@ useEffect(() => {
 
 
   useEffect(() => {
-      
-    const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=4497e6efb7ed4aba97da41643b621a5e&origin=${liveLocation?.lat},${liveLocation?.lng}&destination=${dest_coords?.lat},${dest_coords?.lng}&waypoints=${pickup_coords?.lat},${pickup_coords?.lng}&mode=truck&overview=simplified&alternatives=true`;
+    console.log("pickup_coords", pickup_coords);
+    console.log("dest_coords", dest_coords);
+
+
+    const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=${nb_key}&origin=${liveLocation?.lat},${liveLocation?.lng}&destination=${dest_coords?.lat},${dest_coords?.lng}&waypoints=${pickup_coords?.lat},${pickup_coords?.lng}&mode=truck&overview=simplified&alternatives=true`;
     fetch(routingUrl)
       .then(response => response.json())
       .then(data => {

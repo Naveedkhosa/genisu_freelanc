@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Truck from '@/assets/truck.png';
 
 function ShippingInvoice({ shipment }) {
-  const printRef = useRef();
+  const printRef = useRef(null);
 
   const handlePrint = () => {
     const printContent = printRef.current;
