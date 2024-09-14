@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Bid;
 use App\Models\ChatRoom;
+use App\Models\FreelancerPayment;
 use App\Models\GeneralSetting;
 use App\Models\Shipment;
 use App\Models\Transaction;
@@ -173,6 +174,18 @@ class PaymentController extends Controller
                 $shipment = Shipment::find($shipment_id);
                 $shipment->update([
                     'status' => 'order_confirmed',
+                ]);
+
+                $earned_amount = 0;
+                $shipment_fee = 0;
+
+
+                FreelancerPayment::create([
+                    'freelancer_id'=>$shipment->user_id,
+                    'shipment_id'=>$shipment->id,
+                    'shipment_fee'=>$shipment_fee,
+                    'amount'=>$earned_amount,
+                    'payment_status',
                 ]);
 
                 DB::commit();

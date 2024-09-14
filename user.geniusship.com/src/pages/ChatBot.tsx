@@ -10,7 +10,7 @@ const ChatBot = () => {
   const user = localStorage.getItem("user");
   const current_user = user ? JSON.parse(user) : null;
   const openai = useRef(new OpenAI({
-    apiKey: "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",
+    apiKey: "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",
     dangerouslyAllowBrowser: true,
   })).current;
 
