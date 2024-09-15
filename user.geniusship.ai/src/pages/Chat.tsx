@@ -77,7 +77,7 @@ const Chat = () => {
     const pusher = new Pusher('cba34a03b87076b69b01', {
       cluster: 'ap2',
     });
-    const channel = pusher.subscribe('chats-development');
+    const channel = pusher.subscribe('chats-production');
     channel.bind('chat', (data: any) => {
 
       if (current_user?.id != data?.message?.user?.id) {

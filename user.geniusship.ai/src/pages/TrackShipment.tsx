@@ -355,7 +355,7 @@ const TrackShipment = () => {
       // encrypted: true
     });
 
-    const channel = pusher.subscribe("chats-development");
+    const channel = pusher.subscribe("chats-production");
     channel.bind("message", (data) => {
       console.log("pusher Received message: ", data);
       setPusherData((prevData) => [...prevData, data]);
@@ -365,7 +365,7 @@ const TrackShipment = () => {
     });
 
     return () => {
-      pusher.unsubscribe("chats-development");
+      pusher.unsubscribe("chats-production");
     };
     console.log("pusher end");
   }, []);
