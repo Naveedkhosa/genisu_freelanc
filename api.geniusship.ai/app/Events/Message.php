@@ -43,7 +43,7 @@ class Message implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('geniusship-production'); // Channel name
+        return new Channel('chats-development'); // Channel name
     }
 
     /**

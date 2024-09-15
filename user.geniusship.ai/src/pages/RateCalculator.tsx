@@ -92,7 +92,7 @@ const RateCalculator = () => {
 
         if (run.status === 'completed') {
             const threadMessages = await openai.beta.threads.messages.list(thread?.id);
-
+// @ts-ignore
             let jsonStringMatch = threadMessages?.data[0]?.content[0]?.text?.value.match(/```json([\s\S]*?)```/);
             if (jsonStringMatch) {
                 try {
