@@ -12,13 +12,14 @@ import startIcon from "@/assets/start.png";
 import endIcon from "@/assets/end.png";
 import Pusher from "pusher-js";
 
-import {nb_key} from "@/services/apiClient";
+import { nb_key } from "@/services/apiClient";
 import { PhoneCall } from "lucide-react";
 
 import { FiMapPin } from 'react-icons/fi';
 nextbillion.setApiKey(nb_key);
 
 function initSource(nbmap: any) {
+
   nbmap.map.addSource('route', {
     type: 'geojson',
     data: {
@@ -30,8 +31,8 @@ function initSource(nbmap: any) {
       }
     }
   });
-  
-  
+
+
   nbmap.map.addSource("live-location", {
     type: "geojson",
     data: {
@@ -83,9 +84,10 @@ function initSource(nbmap: any) {
       ],
     },
   });
-  
-  
+
+
 }
+
 
 
 
@@ -123,7 +125,7 @@ function generateNavigationFeature(payload) {
   const routeCollection = emptyFeatureCollection();
 
 
-  payload.routes.forEach((route, index) => {
+  payload?.routes?.forEach((route, index) => {
 
     const lineString = emptyLineString();
 
@@ -161,11 +163,7 @@ function generateNavigationFeature(payload) {
 
       const maneuverPoint = emptyPoint();
       maneuverPoint.geometry.coordinates = [
-
-
         step.maneuver.coordinate.longitude,
-
-
         step.maneuver.coordinate.latitude
       ];
       maneuverPoint.properties = {
@@ -314,18 +312,18 @@ const TrackShipment = () => {
   const { tid } = useParams();
   const nbmapRef = useRef(null);
   const [routeData, setRouteData] = useState(null);
-  
+
   const [liveLocation, setLiveLocation] = useState({
     lat: 34.052235,
     lng: -118.243683,
   }); // Default location
 
   const [center, setCenter] = useState<any>({ lat: 28.6139, lng: 77.2088 });
-  
+
   const [trackings, setTrackings] = useState<any>([]);
   const [pusherData, setPusherData] = useState<any>([]);
   const [shipment, setShipment] = useState<any>([]);
-  
+
   const checkDriver = () => {
     console.log("pusherData", pusherData);
     console.log("shipment", shipment);
@@ -337,6 +335,7 @@ const TrackShipment = () => {
       );
 
       if (matchedRecord) {
+        console.log("matchedRecord : ", matchedRecord);
         setCenter({ lat: matchedRecord?.lat, lng: matchedRecord?.lng });
         setLiveLocation({ lat: matchedRecord?.lat, lng: matchedRecord?.lng });
       } else {
@@ -375,6 +374,8 @@ const TrackShipment = () => {
   }, [pusherData, shipment]);
 
   useEffect(() => {
+
+    console.log("center now  : ", center);
     nbmapRef.current = new NBMap({
       container: "map",
       zoom: 14,
@@ -382,20 +383,31 @@ const TrackShipment = () => {
       center: { lat: center?.lat, lng: center?.lng }
     });
 
-    
+
     nbmapRef.current.on('load', () => {
       initSource(nbmapRef.current);
       initLayer(nbmapRef.current);
+      
     });
-  }, [center]);
-  
-  
-  
-  
+  }, []);
+
+
+  useEffect(()=>{
+    nbmapRef.current.map.flyTo({
+      zoom: 14,
+      center: { lat: center?.lat, lng: center?.lng }
+    });
+  },[center])
+
+
+
+
+
+
 
 
   //const [trackings, setTrackings] = useState<any>([]);
-    
+
   useEffect(() => {
     const liveLocationSource = nbmapRef.current.map.getSource("live-location");
     console.log("liveLocationSource", liveLocationSource);
@@ -464,7 +476,7 @@ const TrackShipment = () => {
 
   useEffect(() => {
     baseClient.get(`shipment/track/${tid}`).then((response) => {
-        setShipment(response.data)
+      setShipment(response.data)
       baseClient.get(`tracking/history/${response?.data[0]?.id}`).then((response1) => {
         console.log("response_data : ", response1.data);
         setTrackings(response1.data);
@@ -475,7 +487,7 @@ const TrackShipment = () => {
       const pickupCoords = JSON.parse(pickup_address_coords);
       const destinationCoords = JSON.parse(destination_address_coords);
       setPickupCoords(JSON.parse(pickup_address_coords));
-        setDestCoords(JSON.parse(destination_address_coords));
+      setDestCoords(JSON.parse(destination_address_coords));
       setCenter(pickupCoords);
 
       // Use NextBillion's routing service
@@ -484,7 +496,7 @@ const TrackShipment = () => {
       const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=${nb_key}&origin=${pickup_coords?.lat},${pickup_coords?.lng}&destination=${destinationCoords?.lat},${destinationCoords?.lng}&mode=truck&overview=simplified&alternatives=true`;
 
 
-return fetch(routingUrl);
+      return fetch(routingUrl);
     }).then(response => response.json())
       .then((data) => {
         setRouteData(data);
@@ -495,9 +507,9 @@ return fetch(routingUrl);
         console.log(error);
       });
   }, [tid]);
-  
-  
-   useEffect(() => {
+
+
+  useEffect(() => {
     const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=${nb_key}&origin=${pickup_coords?.lat},${pickup_coords?.lng}&destination=${dest_coords?.lat},${dest_coords?.lng}&mode=truck&overview=simplified&alternatives=true`;
     fetch(routingUrl)
       .then((response) => response.json())
@@ -508,11 +520,11 @@ return fetch(routingUrl);
         }
       });
   }, [pickup_coords, dest_coords, liveLocation]);
-  
+
   const updateMapCetner = (type: number) => {
     switch (type) {
       case 1:
-        console.log("pickup _cordss : ",pickup_coords);
+        console.log("pickup _cordss : ", pickup_coords);
         setCenter({ lat: pickup_coords?.lat, lng: pickup_coords?.lng });
         break;
       case 2:
@@ -541,8 +553,8 @@ return fetch(routingUrl);
             </div>
           </div>
           <div className="flex gap-2">
-            <button className="bg-green-400  font-semibold px-2 py-1 text-center"  onClick={() => updateMapCetner(1)} >Pickup Location</button>
-            <button className="bg-green-400  font-semibold px-2 py-1 text-center"  onClick={() => updateMapCetner(2)}>Driver Location</button>
+            <button className="bg-green-400  font-semibold px-2 py-1 text-center" onClick={() => updateMapCetner(1)} >Pickup Location</button>
+            <button className="bg-green-400  font-semibold px-2 py-1 text-center" onClick={() => updateMapCetner(2)}>Driver Location</button>
           </div>
           <Button className="bg-gray-200">
             <PhoneCall size={15} />
@@ -560,7 +572,7 @@ return fetch(routingUrl);
               <p className="text-gray-300 text-sm py-2 px-1">No tracking records yet</p>
             )}
             {trackings?.length > 0 && (
-              trackings.map((track:any) => (
+              trackings.map((track: any) => (
 
                 <div className="mb-6">
                   <div className="flex items-center mb-1">

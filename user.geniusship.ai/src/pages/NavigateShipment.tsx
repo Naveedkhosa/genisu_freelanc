@@ -156,16 +156,7 @@ function initLayer(nbmap: any) {
     }
   });
 
-  // nbmap.map.addLayer({
-  //   id: 'maneuver-points',
-  //   type: 'circle',
-  //   filter: ['==', ['get', 'type'], 'maneuver'],
-  //   source: 'route',
-  //   paint: {
-  //     'circle-color': '#3853B1',
-  //     'circle-radius': 10
-  //   }
-  // });
+
 
   // Load the car icon
   nbmap.map.loadImage(carIcon, (error, carImage) => {
@@ -249,25 +240,8 @@ const NavigateShipment = () => {
   const { tid } = useParams();
   const nbmapRef = useRef(null);
   const [routeData, setRouteData] = useState(null);
-  const [liveLocation, setLiveLocation] = useState({ lat: 34.052235, lng: -118.243683 }); // Default location
+  const [liveLocation, setLiveLocation] = useState({ lat: 34.052235, lng: -118.243683 });
 
-  //   useEffect(() => {
-  //     const pusher = new Pusher('dfe96704a38961067cf1', {
-  //       cluster: 'ap2'
-  //     });
-
-  //     const channel = pusher.subscribe('chat');
-
-
-  //     channel.bind('message', function (data) {
-  //       console.log('Live location data received:', data);
-  //       setLiveLocation({ lat: data.lat, lng: data.lng });
-  //     });
-
-  //     return () => {
-  //       pusher.unsubscribe('chat');
-  //     };
-  //   }, []);
 
   const current_user = JSON.parse(localStorage.getItem("user"));
 
@@ -286,16 +260,16 @@ const NavigateShipment = () => {
       // encrypted: true
     });
 
-    const channel = pusher.subscribe('geniusship-production');
+    const channel = pusher.subscribe('chats-production');
     channel.bind('message', (data) => {
       console.log('Received message: ', data);
       if (data.id == current_user?.id) {
-        setLiveLocation({ lat: data.lat, lng: data.lng });
+        setLiveLocation({ lat: data?.lat, lng: data?.lng });
       }
     });
 
     return () => {
-      pusher.unsubscribe('geniusship-production');
+      pusher.unsubscribe('chats-production');
     };
     console.log('pusher end');
   }, []);
@@ -341,7 +315,7 @@ const NavigateShipment = () => {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: [liveLocation.lng, liveLocation.lat]
+            coordinates: [liveLocation?.lng, liveLocation?.lat]
           },
           properties: {}
         });
@@ -362,7 +336,7 @@ const NavigateShipment = () => {
               type: 'Feature',
               geometry: {
                 type: 'symbol',
-                coordinates: [pickup_coords.lng, pickup_coords.lat]
+                coordinates: [pickup_coords?.lng, pickup_coords?.lat]
               },
               properties: {
                 icon: carIcon
@@ -372,7 +346,7 @@ const NavigateShipment = () => {
               type: 'Feature',
               geometry: {
                 type: 'symbol',
-                coordinates: [dest_coords.lng, dest_coords.lat]
+                coordinates: [dest_coords?.lng, dest_coords?.lat]
               },
               properties: {
                 icon: stopIcon
@@ -399,10 +373,6 @@ const NavigateShipment = () => {
 
 
   useEffect(() => {
-    console.log("pickup_coords", pickup_coords);
-    console.log("dest_coords", dest_coords);
-
-
     const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=${nb_key}&origin=${liveLocation?.lat},${liveLocation?.lng}&destination=${dest_coords?.lat},${dest_coords?.lng}&waypoints=${pickup_coords?.lat},${pickup_coords?.lng}&mode=truck&overview=simplified&alternatives=true`;
     fetch(routingUrl)
       .then(response => response.json())
@@ -414,36 +384,7 @@ const NavigateShipment = () => {
       })
   }, [pickup_coords, dest_coords, liveLocation])
 
-  // useEffect(() => {
-  //   baseClient.get(`shipment/track/${tid}`).then((response) => {
-  //     const { pickup_address_coords, destination_address_coords } = response.data[0];
-  //     const pickupCoords = JSON.parse(pickup_address_coords);
-  //     const destinationCoords = JSON.parse(destination_address_coords);
 
-  //     navigator.geolocation.getCurrentPosition(position => {
-  //       // const userLocation = { lat: "34.0572", lng: "-118.024569" };
-
-  //       console.log("position is is ",position)
-
-  //       // Construct the routing URL
-  //       const routingUrl = `https://api.nextbillion.io/navigation/json?option=flexible&key=4497e6efb7ed4aba97da41643b621a5e&origin=${position.lat},${position.lng}&destination=${destinationCoords.lat},${destinationCoords.lng}&waypoints=${pickupCoords.lat},${pickupCoords.lng}&mode=truck&overview=simplified&alternatives=true`;
-  //       console.log('routingUrl',routingUrl);
-  //       fetch(routingUrl)
-  //         .then(response => response.json())
-  //         .then(data => {
-  //           setRouteData(data);
-  //           if (nbmapRef.current) {
-  //             updateResult(nbmapRef.current, data);
-  //           }
-  //         })
-  //         .catch(error => console.log(error));
-  //     }, error => {
-  //       alert('Error getting your location:'+error);
-  //     });
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }, [tid]);
 
   return (
     <>

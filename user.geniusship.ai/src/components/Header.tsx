@@ -147,12 +147,12 @@ const Header = () => {
   };
   const { toggleSidebar, isVisible } = useSidebarStore();
   const current_user = fetchUser();
-  
-  
-  
-   // geo location handling
 
- 
+
+
+  // geo location handling
+
+
 
   type LocationStatus = "accessed" | "denied" | "unknown" | "error";
 
@@ -160,32 +160,27 @@ const Header = () => {
 
     useState<LocationStatus>("unknown");
 
-  const [position, setPosition] = useState({
-
-    lat: 0,
-
-    lng: 0
-
-  });
+  const [position, setPosition] = useState<any>();
 
   let watchId: number | null = null;
 
-  
+
   if (current_user?.role == "Driver") {
-    
-    console.log('current_user?.role',current_user?.role);
+
+    console.log('current_user?.role', current_user?.role);
 
     if ("geolocation" in navigator) {
 
       watchId = navigator.geolocation.watchPosition((position) => {
-        console.log("positionn :: ",position);
-          setPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          setLocationStatus("accessed");
-        }
-
+        console.log("positionn :: ", {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setPosition({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      }
       );
 
     }
@@ -195,39 +190,25 @@ const Header = () => {
 
 
   useEffect(() => {
-    console.log(locationStatus);
-    
-
-      // location
-      console.log("locationStatus : ", locationStatus);
-
-      console.log("position : ", position);
 
 
+    console.log("position now: ", position);
+
+if(position?.lat==undefined){
+  return;
+}
 
     baseClient.post("update/locations", {
+      id: current_user.id,
+      name: current_user.name,
+      lat: position?.lat,
+      lng: position?.lng
+    })
+      .then((response) => {
+        console.log("updated : ", response);
+      });
 
-          id: current_user.id,
-
-          name: current_user.name,
-
-          lat: position.lat,
-
-          lng: position.lng
-
-        })
-
-        .then((response) => {
-
-          console.log("updated : ", response);
-
-        });
-
-      //
-
-   
-
-  }, [position, locationStatus, watchId]);
+  }, [position]);
   return (
     <div className="flex items-center justify-between w-full p-4 border border-gray-500 bg-black bg-opacity-25 shadow sm:justify-end">
       <div className="flex justify-end lg:hidden">
@@ -604,7 +585,7 @@ const Header = () => {
                 <div className="grid gap-4">
                   <div className="grid grid-cols-1 gap-4">
                     <Button
-                    className="bg-black bg-opacity-25 text-white"
+                      className="bg-black bg-opacity-25 text-white"
                       type="button"
                       variant="outline"
                       onClick={handleLogout}
@@ -631,7 +612,7 @@ const Header = () => {
                                 </Label>
                                 <Input
                                   id="name"
-                                
+
                                   value={formData.name}
                                   onChange={handleInputChange}
                                   className="col-span-3 bg-black bg-opacity-25"
