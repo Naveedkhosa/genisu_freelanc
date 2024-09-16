@@ -320,8 +320,8 @@ const NavigateShipment = () => {
   });
 
   var watch_id = navigator.geolocation.watchPosition((position) => {
-    // setLiveLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
-    setLiveLocation({lat: 28.4462419, lng: 77.0345721});
+    setLiveLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+    // setLiveLocation({lat: 28.4462419, lng: 77.0345721});
     console.log(position);
   });
 

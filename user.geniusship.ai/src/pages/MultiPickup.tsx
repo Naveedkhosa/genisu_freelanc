@@ -15,6 +15,8 @@ function addMarker(className, text, origin, map, dragedCB) {
     htmlEle.className = `marker ${className}`
     if (className != "Vehicle") {
         htmlEle.innerHTML = text
+    } else {
+        console.log("vehicle location : ", origin);
     }
     new nextbillion.maps.Marker({
         draggable: false,
@@ -97,42 +99,38 @@ const MultiPickup = () => {
     const [mylocation, setMyLocation] = useState([77.2870, 28.6475]);
 
     const [locations, setLocations] = useState([
-        [77.2090, 28.6139],  // India Gate
-        [77.2220, 28.6195],  // Approx 5.2 km away
-        [77.2350, 28.6251],  // Approx 5.3 km away
-        [77.2480, 28.6307],  // Approx 5.6 km away
-        [77.2610, 28.6363],  // Approx 6.0 km away
-        [77.2740, 28.6419],  // Approx 6.5 km away
         mylocation
     ]);
 
-    useEffect(() => {
+    const loadShipments = () => {
         baseClient.get('user/multi-pickups').then((response) => {
             const new_shipment_data = [];
             const new_locations_data = [];
             const new_labels = [];
 
-
-
             response.data?.bids?.map((item, index) => {
                 const pickup_coords = JSON.parse(item?.shipment?.pickup_address_coords);
                 const dest_coords = JSON.parse(item?.shipment?.destination_address_coords);
-                new_labels.push(
-                    { class: 'P' + (index + 1), text: "P" + (index + 1) });
-                new_labels.push(
-                    { class: 'D' + (index + 1), text: "D" + (index + 1) });
+                new_labels.push({
+                    class: 'P' + (index + 1),
+                    text: "P" + (index + 1)
+                });
+                new_labels.push({
+                    class: 'D' + (index + 1),
+                    text: "D" + (index + 1)
+                });
 
                 new_locations_data.push([pickup_coords?.lng, pickup_coords?.lat]);
                 new_locations_data.push([dest_coords?.lng, dest_coords?.lat]);
                 new_shipment_data.push({
                     pickup: {
                         id: index,
-                        location_index: index+index
+                        location_index: index + index
                     },
                     delivery: {
                         description: "d1",
                         id: index + 1,
-                        location_index: index+(index+1)
+                        location_index: index + (index + 1)
                     }
                 });
             });
@@ -141,13 +139,13 @@ const MultiPickup = () => {
             setShipments(new_shipment_data);
             setLocations(new_locations_data);
         });
-    }, []);
+    };
 
 
 
     var watch_id = navigator.geolocation.watchPosition((position) => {
-        // setMyLocation([position.coords.longitude,position.coords.latitude]);
-        setMyLocation([77.2870, 28.6475]);
+        setMyLocation([position.coords.longitude,position.coords.latitude]);
+        // setMyLocation([77.2870, 28.6475]);
     });
 
     useEffect(() => {
@@ -163,6 +161,7 @@ const MultiPickup = () => {
                 // set locations information
                 locations: {
                     id: 2,
+                    // @ts-ignore
                     location: locations
                 },
                 // set shipments information
@@ -236,19 +235,18 @@ const MultiPickup = () => {
                     popup.current.remove()
                     popup.current = null
                 }
-                
-                    requestOptimization()
-                
+                loadShipments();
+
             }
 
             addMarker('Vehicle', 'driver', locations[locations.length - 1], nbmap.current.map, (e) => {
                 const newOrigin = e.target.getLngLat()
                 locations[locations.length - 1] = [newOrigin.lng, newOrigin.lat]
                 setLocations(locations)
-            })
+            });
 
         })
-    }, [shipments])
+    }, [])
     useEffect(() => {
         if (!isInited.current) {
             return
@@ -282,7 +280,7 @@ const MultiPickup = () => {
             }
             requestOptimization();
         }
-    }, [locations, shipments]);
+    }, [locations, shipments,mylocation]);
 
     useEffect(() => {
         if (nbmap.current && isInited.current) {
