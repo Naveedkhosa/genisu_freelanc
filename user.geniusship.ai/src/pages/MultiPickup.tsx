@@ -10,7 +10,7 @@ import baseClient, { nb_key } from "@/services/apiClient";
 import { FaLocationArrow } from 'react-icons/fa';
 import { toast } from 'sonner';
 
-function addMarker(className, text, origin, map, dragedCB) {
+function addMarker(className, text,name, origin, map, dragedCB) {
     const htmlEle = document.createElement('div')
     htmlEle.className = `marker ${className}`
     if (className != "Vehicle") {
@@ -18,13 +18,22 @@ function addMarker(className, text, origin, map, dragedCB) {
     } else {
         console.log("vehicle location : ", origin);
     }
-    new nextbillion.maps.Marker({
+
+    const popup = new nextbillion.maps.Popup({
+        offset: 25,
+        closeButton: false
+      }).setText(name);
+
+
+    const marker = new nextbillion.maps.Marker({
         draggable: false,
         element: htmlEle,
     })
         .setLngLat(origin)
+        .setPopup(popup)
         .on('dragend', dragedCB)
         .addTo(map)
+        marker.togglePopup();
 }
 
 function initSource(nbmap) {
@@ -113,11 +122,13 @@ const MultiPickup = () => {
                 const dest_coords = JSON.parse(item?.shipment?.destination_address_coords);
                 new_labels.push({
                     class: 'P' + (index + 1),
-                    text: "P" + (index + 1)
+                    text: "P" + (index + 1),
+                    name : item?.shipment?.customer?.name+"(picker: "+item?.shipment?.pickup_contact_name+")"
                 });
                 new_labels.push({
                     class: 'D' + (index + 1),
-                    text: "D" + (index + 1)
+                    text: "D" + (index + 1),
+                    name : item?.shipment?.drop_contact_name
                 });
 
                 new_locations_data.push([pickup_coords?.lng, pickup_coords?.lat]);
@@ -239,7 +250,7 @@ const MultiPickup = () => {
 
             }
 
-            addMarker('Vehicle', 'driver', locations[locations.length - 1], nbmap.current.map, (e) => {
+            addMarker('Vehicle', 'You','You', locations[locations.length - 1], nbmap.current.map, (e) => {
                 const newOrigin = e.target.getLngLat()
                 locations[locations.length - 1] = [newOrigin.lng, newOrigin.lat]
                 setLocations(locations)
@@ -290,7 +301,7 @@ const MultiPickup = () => {
             }
 
             labels?.map((item, index) => {
-                addMarker(item?.class, item?.text, locations[index], nbmap.current.map, (e) => {
+                addMarker(item?.class, item?.text,item?.name, locations[index], nbmap.current.map, (e) => {
                     const newOrigin = e.target.getLngLat()
                     locations[index] = [newOrigin.lng, newOrigin.lat]
                     setLocations(locations)
