@@ -36,6 +36,7 @@ import Home from "@/pages/Home";
 import NewShipment from "@/pages/NewShipment";
 import NewShipmentDetailsPage from "@/pages/NewShipmentDetail";
 import Chat from "@/pages/Chat";
+import MultiPickup from "@/pages/MultiPickup";
 
 const router = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
             {
                 path: "/shipment",
                 element: <Shipment />
+            },
+            {
+                path: '/multi-pickup',
+                element: <MultiPickup />
             },
             {
                 path: "/rate-calculator",

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\Message;
 use App\Http\Controllers\Controller;
+use App\Models\Bid;
 use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Psy\Readline\Hoa\EventException;
-use App\Events\Message;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -30,13 +31,31 @@ class UserController extends Controller
         }
     }
 
-    public function updateLocations(Request $request){
-       $resp =  event(new Message($request->lat,$request->lng,$request->name,$request->id));
+    public function updateLocations(Request $request)
+    {
+        $resp = event(new Message($request->lat, $request->lng, $request->name, $request->id));
     }
 
-  
+    public function getMultiPickup()
+    {
+        $user = Auth::user()->id;
+        $bids = Bid::where('bidder_id', $user)
+            ->where('bid_status', 'Accepted')
+            ->with(['bidder', 'shipment' => function ($query) {
+                $query->whereNotIn('status', ['pending', 'delivered'])
+                    ->where(function ($q) {
+                        $q->where('status', 'order_confirmed')
+                            ->orWhere('status', 'pickup');
+                    });
+            }])
+            ->get();
 
-    
+        return response()->json([
+            "success" => true,
+            "bids" => $bids,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -60,7 +79,7 @@ class UserController extends Controller
             ]);
 
             $userDetailsData = $request->only([
-                'transporter_id', 'phone', 'address', 'company', 'license_number'
+                'transporter_id', 'phone', 'address', 'company', 'license_number',
             ]);
             $userDetailsData['user_id'] = $user->id;
             UserDetail::create($userDetailsData);
@@ -71,9 +90,9 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-    
+
             // Return a more specific error message if needed
-            return response()->json(['message' =>  $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -112,7 +131,7 @@ class UserController extends Controller
         $user->update($request->only(['name', 'email']));
 
         $userDetailsData = $request->only([
-            'phone', 'address', 'company', 'license_number'
+            'phone', 'address', 'company', 'license_number',
         ]);
         $userDetailsData['user_id'] = $user->id;
 
@@ -153,17 +172,17 @@ class UserController extends Controller
         $drivers = User::where('role', 'Driver')->with('userDetail')->get();
         return response()->json($drivers, 200);
     }
-    
+
     public function getTransporterDrivers($transporter_id)
     {
         // Fetch drivers whose role is 'Driver' and whose userDetail's transporter_id matches the provided transporter_id
         $drivers = User::where('role', 'Driver')
-                    ->whereHas('userDetail', function ($query) use ($transporter_id) {
-                        $query->where('transporter_id', $transporter_id);
-                    })
-                    ->with('userDetail')
-                    ->get();
-        
+            ->whereHas('userDetail', function ($query) use ($transporter_id) {
+                $query->where('transporter_id', $transporter_id);
+            })
+            ->with('userDetail')
+            ->get();
+
         // Return the result as JSON response
         return response()->json($drivers, 200);
     }

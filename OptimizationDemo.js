@@ -12,7 +12,7 @@ function addMarker(className, origin, map, dragedCB) {
   htmlEle.className = `marker ${className}`
   htmlEle.innerHTML = className
   new Marker({
-    draggable: false,
+    draggable: true,
     element: htmlEle
   })
     .setLngLat(origin)
