@@ -74,6 +74,8 @@ class User extends Authenticatable
         return $this->hasMany(Shipment::class, 'customer_id');
     }
 
+
+
     public function supportTickets()
     {
         return $this->hasMany(SupportTicket::class);

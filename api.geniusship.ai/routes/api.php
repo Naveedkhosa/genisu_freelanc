@@ -98,6 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('all_transporters', [UserController::class, 'getAllTransporters']);
     Route::get('transporter_drivers/{transporter_id}', [UserController::class, 'getTransporterDrivers']);
     Route::get('all_drivers', [UserController::class, 'getAllDrivers']);
+    Route::get('user/multi-pickups', [UserController::class, 'getMultiPickup']);
 
     // Vehicle CRUD
     Route::get('vehicles', [VehicleController::class, 'index']);
@@ -268,17 +269,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/truck-body-types/{id}', [TruckBodyTypeController::class, 'destroy']); // Delete a truck body type
 });
 
-// Paypal Controller
-Route::post('process-transaction', [PayPalController::class, 'processTransaction']);
-// Route::get('success-transaction', [PayPalController::class, 'successTransaction'])->name('api.successTransaction');
-// Route::get('cancel-transaction', [PayPalController::class, 'cancelTransaction'])->name('api.cancelTransaction');
 
-// Testing Pusher
-Route::get('/testing-routes', function () {
-    $message = "Say Hi! From Pusher";
-    $pusher = app('pusher');
-    $resp = $pusher->trigger('CustomChannel', 'UserNotification', [
-        'message' => $message,
-    ]);
-    return response()->json(["response" => $resp, "Message" => "$message Sent Successfully"], 200);
-});
