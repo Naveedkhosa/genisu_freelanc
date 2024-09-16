@@ -68,7 +68,7 @@ const NewShipment = () => {
 
   return (
     <div className="flex flex-col w-full px-2 md:pl-[84px] sm:pl-0">
-      <div className="flex justify-between bg-gray-800 bg-opacity-25 mt-2 rounded-lg">
+      <div className="flex overflow-hidden overflow-x-scroll justify-between bg-gray-800 bg-opacity-25 mt-2 rounded-lg">
       <div className="flex space-x-4 p-4 ">
         {["pending", "order_confirmed", "pickup", "in_transit", "delivered"].map((tab) => (
           <button

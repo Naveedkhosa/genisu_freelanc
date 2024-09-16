@@ -216,8 +216,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/cache/data',
+        'lock_path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -420,13 +420,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\app',
+        'root' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\app/public',
+        'root' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\app/public',
         'url' => 'http://127.0.0.1:8000/storage',
         'visibility' => 'public',
         'throw' => false,
@@ -446,7 +446,7 @@
     ),
     'links' => 
     array (
-      'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\public\\storage' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\app/public',
+      'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\public\\storage' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\app/public',
     ),
   ),
   'logging' => 
@@ -471,14 +471,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -543,7 +543,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -619,7 +619,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -761,7 +761,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -799,9 +799,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\resources\\views',
+      0 => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\resources\\views',
     ),
-    'compiled' => 'C:\\newxampp\\htdocs\\projects\\geniusship-latest-code\\genisu_freelanc\\api.geniusship.ai\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Naveed ullah khosa\\Downloads\\new_one\\genisu_freelanc\\api.geniusship.ai\\storage\\framework\\views',
   ),
   'tinker' => 
   array (
